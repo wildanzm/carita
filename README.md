@@ -27,7 +27,7 @@ Sistem CARITA dibangun di atas arsitektur dua lapis yang unik:
 
 Berikut adalah gambaran bagaimana data mengalir dalam sistem CARITA:
 
-```mermaid
+```
 graph TD
     User[👤 Perajin/User] -->|Upload Foto| Laravel[🟢 Laravel App (Web)]
     
