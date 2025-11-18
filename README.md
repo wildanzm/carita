@@ -223,5 +223,3 @@ Akses aplikasi di browser: `http://localhost:8000`
 -----
 
 *Dibuat dengan ❤️ dan ☕ untuk Budaya Majalengka.*
-
-```
