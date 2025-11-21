@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
 
 <head>
     @include('partials.head')
@@ -109,7 +109,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
                     <!-- Brand Section -->
                     <div class="space-y-4">
-                        <h3 class="text-2xl lg:text-3xl font-bold text-amber-500">Carita</h3>
+                        <h3 class="text-2xl lg:text-3xl font-bold text-amber-700">Carita</h3>
                         <p class="text-gray-400 text-sm lg:text-base leading-relaxed">
                             Platform AI yang menghubungkan budaya lokal dengan teknologi modern untuk melestarikan
                             warisan Indonesia.
