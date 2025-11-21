@@ -40,7 +40,7 @@
 
         {{-- Kanan: Hasil Analisis AI --}}
         <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col min-h-[250px]">
-            <h2 class="text-lg font-bold text-gray-900 mb-4">Hasil Analisis AI</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-4">Hasil Cerita</h2>
 
             {{-- Content Placeholder --}}
             <div class="flex-1 flex flex-col items-center justify-center text-center h-full ">
