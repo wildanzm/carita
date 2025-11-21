@@ -1,4 +1,4 @@
-<div class="bg-white mx-auto px-4 sm:px-6 lg:px-8 xl:px-[10%] lg:h-screen py-22 flex flex-col justify-center bg-cover bg-center"
+<div class="bg-white mx-auto px-4 sm:px-6 lg:px-8 xl:px-[10%] lg:h-screen py-25 flex flex-col justify-center bg-cover bg-center"
     style="background-image: url('bg.svg')">
     {{-- Heading --}}
     <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">

@@ -476,3 +476,14 @@
         </div>
     </section>
 </div>
+
+<script src="https://unpkg.com/kursor/dist/kursor.js"></script>
+
+{{-- 3. Inisialisasi Efek --}}
+<script>
+    new kursor({
+        type: 2, 
+        removeDefaultCursor: true, 
+        color: '#D95D0E' 
+    })
+</script>   
