@@ -80,16 +80,11 @@
             <div class="text-center">
                 <p class="text-sm text-gray-600 mb-3">
                     Belum punya akun?
+                    <flux:link :href="route('register')" wire:navigate
+                        class="text-orange-600 hover:text-orange-700 font-medium">
+                        Daftar Sekarang
+                    </flux:link>
                 </p>
-                <flux:link :href="route('register')" wire:navigate
-                    class="inline-flex items-center justify-center gap-2 w-full py-3 border-2 border-amber-600 text-amber-700 font-semibold rounded-full hover:bg-amber-700 hover:text-white transition-all duration-300 hover:no-underline  no-underline shadow-md ">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
-                        </path>
-                    </svg>
-                    <span>Daftar Sekarang</span>
-                </flux:link>
             </div>
         @endif
     </div>
