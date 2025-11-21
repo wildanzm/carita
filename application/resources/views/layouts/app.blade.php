@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
 
 <head>
     @include('partials.head')
@@ -13,22 +13,26 @@
 
         <!-- Desktop Menu -->
         <ul class="hidden lg:flex gap-5 items-center font-semibold">
-            <li class="group relative"><a href="{{ route('home') }}" class="hover:text-amber-700">Beranda</a><span
+            <li class="group relative"><a href="{{ route('home') }}" wire:navigate
+                    class="hover:text-amber-700">Beranda</a><span
                     class="absolute -bottom-1 left-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
                 <span
                     class="absolute -bottom-1 right-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
             </li>
-            <li class="group relative"><a href="">Explorasi Budaya</a> <span
+            <li class="group relative"><a href="#" wire:navigate class="hover:text-amber-700">Explorasi Budaya</a>
+                <span
                     class="absolute -bottom-1 left-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
                 <span
                     class="absolute -bottom-1 right-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
             </li>
-            <li class="group relative"><a href="">Tentang Carita</a> <span
+            <li class="group relative"><a href="#" wire:navigate class="hover:text-amber-700">Tentang Carita</a>
+                <span
                     class="absolute -bottom-1 left-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
                 <span
                     class="absolute -bottom-1 right-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
             </li>
-            <li class="group relative"><a href="">Untuk Perajin</a> <span
+            <li class="group relative"><a href="#" wire:navigate class="hover:text-amber-700">Untuk Perajin</a>
+                <span
                     class="absolute -bottom-1 left-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
                 <span
                     class="absolute -bottom-1 right-1/2 w-0 transition-all duration-500 h-0.5 bg-amber-700 group-hover:w-3/6"></span>
@@ -41,8 +45,7 @@
                 @auth
                     <!-- User Dropdown -->
                     <div class="relative group">
-                        <button
-                            class="flex items-center gap-3 px-4 py-2 rounded-full transition-all duration-300">
+                        <button class="flex items-center gap-3 px-4 py-2 rounded-full transition-all duration-300">
                             <!-- Profile Icon -->
                             <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.4"
@@ -61,15 +64,15 @@
                         <div
                             class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100">
                             <div class="py-2">
-                                <a href="{{ url('/dashboard') }}"
+                                <a href="{{ url('/dashboard') }}" wire:navigate
                                     class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
                                     Dashboard
                                 </a>
-                                <a href="#"
+                                <a href="#" wire:navigate
                                     class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
                                     Profil
                                 </a>
-                                <a href="#"
+                                <a href="#" wire:navigate
                                     class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
                                     Pengaturan
                                 </a>
@@ -85,10 +88,10 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('login') }}" wire:navigate
                         class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300">Login</a>
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}"
+                        <a href="{{ route('register') }}" wire:navigate
                             class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
                     @endif
                 @endauth
@@ -107,18 +110,22 @@
             class="mobile-menu lg:hidden bg-white shadow-lg px-[5%] pb-5 fixed left-0 right-0 z-40 top-[88px] rounded-b-2xl">
             <ul class="flex flex-col gap-4 font-semibold text-gray-800 mb-5 pt-4">
                 <li class="border-b border-gray-200 pb-2">
-                    <a href="" class="block hover:text-amber-700 transition-colors duration-300">Beranda</a>
+                    <a href="{{ route('home') }}" wire:navigate
+                        class="block hover:text-amber-700 transition-colors duration-300">Beranda</a>
                 </li>
                 <li class="border-b border-gray-200 pb-2">
-                    <a href="" class="block hover:text-amber-700 transition-colors duration-300">Explorasi
+                    <a href="#" wire:navigate
+                        class="block hover:text-amber-700 transition-colors duration-300">Explorasi
                         Budaya</a>
                 </li>
                 <li class="border-b border-gray-200 pb-2">
-                    <a href="" class="block hover:text-amber-700 transition-colors duration-300">Tentang
+                    <a href="#" wire:navigate
+                        class="block hover:text-amber-700 transition-colors duration-300">Tentang
                         Carita</a>
                 </li>
                 <li class="border-b border-gray-200 pb-2">
-                    <a href="" class="block hover:text-amber-700 transition-colors duration-300">Untuk
+                    <a href="#" wire:navigate
+                        class="block hover:text-amber-700 transition-colors duration-300">Untuk
                         Perajin</a>
                 </li>
             </ul>
@@ -127,13 +134,13 @@
             <div class="flex flex-col gap-3">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}"
+                        <a href="{{ url('/dashboard') }}" wire:navigate
                             class="bg-amber-700 text-white px-8 py-2 rounded-full shadow-md text-center hover:bg-amber-800 transition-all duration-300">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('login') }}" wire:navigate
                             class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md text-center hover:shadow-lg transition-all duration-300">Login</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}"
+                            <a href="{{ route('register') }}" wire:navigate
                                 class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full text-center hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
                         @endif
                     @endauth
@@ -152,7 +159,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
                     <!-- Brand Section -->
                     <div class="space-y-4">
-                        <h3 class="text-2xl lg:text-3xl font-bold text-amber-500">Carita</h3>
+                        <h3 class="text-2xl lg:text-3xl font-bold text-amber-700">Carita</h3>
                         <p class="text-gray-400 text-sm lg:text-base leading-relaxed">
                             Platform AI yang menghubungkan budaya lokal dengan teknologi modern untuk melestarikan
                             warisan Indonesia.
@@ -194,16 +201,16 @@
                     <div>
                         <h4 class="text-white font-semibold text-lg mb-4">Navigasi</h4>
                         <ul class="space-y-3">
-                            <li><a href="#"
+                            <li><a href="{{ route('home') }}" wire:navigate
                                     class="hover:text-amber-500 transition-colors duration-300 text-sm lg:text-base">Beranda</a>
                             </li>
-                            <li><a href="#"
+                            <li><a href="#" wire:navigate
                                     class="hover:text-amber-500 transition-colors duration-300 text-sm lg:text-base">Eksplorasi
                                     Budaya</a></li>
-                            <li><a href="#"
+                            <li><a href="#" wire:navigate
                                     class="hover:text-amber-500 transition-colors duration-300 text-sm lg:text-base">Tentang
                                     Carita</a></li>
-                            <li><a href="#"
+                            <li><a href="#" wire:navigate
                                     class="hover:text-amber-500 transition-colors duration-300 text-sm lg:text-base">Untuk
                                     Perajin</a></li>
                         </ul>

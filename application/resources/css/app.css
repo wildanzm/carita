@@ -6,6 +6,16 @@
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
+@layer base {
+    :root,
+    html,
+    body {
+        color-scheme: light;
+        background-color: white;
+        @apply text-gray-800;
+    }
+}
+
 /* Hamburger Animation */
 .hamburger {
     cursor: pointer;
@@ -124,6 +134,11 @@
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.hero-image:hover {
+    transform: translateY(-10px) scale(1.05);
+    z-index: 10;
+}
+
 /* Floating Animation */
 @keyframes float {
     0%,
@@ -172,6 +187,11 @@
         opacity: 0.5;
         transform: scale(1.1);
     }
+}
+
+/* Livewire Progress Bar Customization */
+.livewire-progress-bar {
+    background-color: #f59e0b !important; /* amber-500 */
 }
 /* Mobile Menu Animation */
 .mobile-menu {

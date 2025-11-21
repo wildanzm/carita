@@ -81,7 +81,7 @@
 
         {{-- Kanan: Hasil Analisis / Preview / Publish --}}
         <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col min-h-[250px]">
-            <h2 class="text-lg font-bold text-gray-900 mb-4">Hasil Analisis AI</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-4">Hasil Cerita</h2>
 
             <div class="flex-1 flex flex-col items-stretch justify-center h-full">
 
