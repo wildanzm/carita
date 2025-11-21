@@ -42,59 +42,59 @@
         <!-- Desktop Auth Buttons -->
         <div class="hidden lg:flex gap-3">
             @if (Route::has('login'))
-                @auth
-                    <!-- User Dropdown -->
-                    <div class="relative group">
-                        <button class="flex items-center gap-3 px-4 py-2 rounded-full transition-all duration-300">
-                            <!-- Profile Icon -->
-                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.4"
-                                    d="M12 2C9.38 2 7.25 4.13 7.25 6.75C7.25 9.32 9.26 11.4 11.88 11.49C11.96 11.48 12.04 11.48 12.1 11.49C12.12 11.49 12.13 11.49 12.15 11.49C12.16 11.49 12.16 11.49 12.17 11.49C14.73 11.4 16.74 9.32 16.75 6.75C16.75 4.13 14.62 2 12 2Z"
-                                    fill="#b45309"></path>
-                                <path
-                                    d="M17.0809 14.1499C14.2909 12.2899 9.74094 12.2899 6.93094 14.1499C5.66094 14.9999 4.96094 16.1499 4.96094 17.3799C4.96094 18.6099 5.66094 19.7499 6.92094 20.5899C8.32094 21.5299 10.1609 21.9999 12.0009 21.9999C13.8409 21.9999 15.6809 21.5299 17.0809 20.5899C18.3409 19.7399 19.0409 18.5999 19.0409 17.3599C19.0309 16.1299 18.3409 14.9899 17.0809 14.1499Z"
-                                    fill="#b45309"></path>
-                            </svg>
-                            <!-- User Name -->
-                            <span class="font-semibold text-gray-800 text-lg">Halo,
-                                {{ explode(' ', auth()->user()->name)[0] }}</span>
-                        </button>
+            @auth
+            <!-- User Dropdown -->
+            <div class="relative group">
+                <button class="flex items-center gap-3 px-4 py-2 rounded-full transition-all duration-300">
+                    <!-- Profile Icon -->
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4"
+                            d="M12 2C9.38 2 7.25 4.13 7.25 6.75C7.25 9.32 9.26 11.4 11.88 11.49C11.96 11.48 12.04 11.48 12.1 11.49C12.12 11.49 12.13 11.49 12.15 11.49C12.16 11.49 12.16 11.49 12.17 11.49C14.73 11.4 16.74 9.32 16.75 6.75C16.75 4.13 14.62 2 12 2Z"
+                            fill="#b45309"></path>
+                        <path
+                            d="M17.0809 14.1499C14.2909 12.2899 9.74094 12.2899 6.93094 14.1499C5.66094 14.9999 4.96094 16.1499 4.96094 17.3799C4.96094 18.6099 5.66094 19.7499 6.92094 20.5899C8.32094 21.5299 10.1609 21.9999 12.0009 21.9999C13.8409 21.9999 15.6809 21.5299 17.0809 20.5899C18.3409 19.7399 19.0409 18.5999 19.0409 17.3599C19.0309 16.1299 18.3409 14.9899 17.0809 14.1499Z"
+                            fill="#b45309"></path>
+                    </svg>
+                    <!-- User Name -->
+                    <span class="font-semibold text-gray-800 text-lg">Halo,
+                        {{ explode(' ', auth()->user()->name)[0] }}</span>
+                </button>
 
-                        <!-- Dropdown Menu -->
-                        <div
-                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100">
-                            <div class="py-2">
-                                <a href="{{ url('/dashboard') }}" wire:navigate
-                                    class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
-                                    Dashboard
-                                </a>
-                                <a href="#" wire:navigate
-                                    class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
-                                    Profil
-                                </a>
-                                <a href="#" wire:navigate
-                                    class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
-                                    Pengaturan
-                                </a>
-                                <div class="border-t border-gray-100 my-2"></div>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit"
-                                        class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200">
-                                        Logout
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                <!-- Dropdown Menu -->
+                <div
+                    class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100">
+                    <div class="py-2">
+                        <a href="{{ url('/dashboard') }}" wire:navigate
+                            class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
+                            Dashboard
+                        </a>
+                        <a href="#" wire:navigate
+                            class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
+                            Profil
+                        </a>
+                        <a href="#" wire:navigate
+                            class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
+                            Pengaturan
+                        </a>
+                        <div class="border-t border-gray-100 my-2"></div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200">
+                                Logout
+                            </button>
+                        </form>
                     </div>
-                @else
-                    <a href="{{ route('login') }}" wire:navigate
-                        class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300">Login</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" wire:navigate
-                            class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
-                    @endif
-                @endauth
+                </div>
+            </div>
+            @else
+            <a href="{{ route('login') }}" wire:navigate
+                class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300">Login</a>
+            @if (Route::has('register'))
+            <a href="{{ route('register') }}" wire:navigate
+                class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
+            @endif
+            @endauth
             @endif
         </div>
 
@@ -119,13 +119,11 @@
                         Budaya</a>
                 </li>
                 <li class="border-b border-gray-200 pb-2">
-                    <a href="#" wire:navigate
-                        class="block hover:text-amber-700 transition-colors duration-300">Tentang
+                    <a href="#" wire:navigate class="block hover:text-amber-700 transition-colors duration-300">Tentang
                         Carita</a>
                 </li>
                 <li class="border-b border-gray-200 pb-2">
-                    <a href="#" wire:navigate
-                        class="block hover:text-amber-700 transition-colors duration-300">Untuk
+                    <a href="#" wire:navigate class="block hover:text-amber-700 transition-colors duration-300">Untuk
                         Perajin</a>
                 </li>
             </ul>
@@ -133,17 +131,17 @@
             <!-- Mobile Auth Buttons -->
             <div class="flex flex-col gap-3">
                 @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}" wire:navigate
-                            class="bg-amber-700 text-white px-8 py-2 rounded-full shadow-md text-center hover:bg-amber-800 transition-all duration-300">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" wire:navigate
-                            class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md text-center hover:shadow-lg transition-all duration-300">Login</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" wire:navigate
-                                class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full text-center hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
-                        @endif
-                    @endauth
+                @auth
+                <a href="{{ url('/dashboard') }}" wire:navigate
+                    class="bg-amber-700 text-white px-8 py-2 rounded-full shadow-md text-center hover:bg-amber-800 transition-all duration-300">Dashboard</a>
+                @else
+                <a href="{{ route('login') }}" wire:navigate
+                    class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md text-center hover:shadow-lg transition-all duration-300">Login</a>
+                @if (Route::has('register'))
+                <a href="{{ route('register') }}" wire:navigate
+                    class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full text-center hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
+                @endif
+                @endauth
                 @endif
             </div>
         </div>
@@ -251,8 +249,8 @@
                                 <span class="text-sm lg:text-base">Majalengka, Jawa Barat, Indonesia</span>
                             </li>
                             <li class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                     </path>
@@ -260,8 +258,8 @@
                                 <span class="text-sm lg:text-base">info@carita.id</span>
                             </li>
                             <li class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
                                     </path>
@@ -289,6 +287,7 @@
             </div>
         </div>
     </footer>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @fluxScripts
 </body>
 
