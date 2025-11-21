@@ -10,7 +10,9 @@ use App\Livewire\User\UploadImage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
-Route::get("/upload", UploadImage::class)->name('upload-image');
+Route::get("/upload", UploadImage::class)
+    ->middleware(['auth', 'verified'])
+    ->name('upload-image');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

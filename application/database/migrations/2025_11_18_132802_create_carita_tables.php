@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('image_path'); // Lokasi file foto yang diupload
             $table->string('detected_motif')->nullable(); // Hasil deteksi Vision AI
             $table->text('narrative'); // Cerita yang dihasilkan AI
+            $table->text('caption')->nullable();
             $table->string('qr_code_path')->nullable(); // Path file QR Code
 
             // Menyimpan ID dari cultural_chunks yang dipakai untuk traceabilitas
