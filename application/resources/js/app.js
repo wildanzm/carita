@@ -20,8 +20,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all animated elements
-document.addEventListener("DOMContentLoaded", () => {
+// Function to initialize animations
+function initializeAnimations() {
     const animatedElements = document.querySelectorAll(
         ".fade-in-up, .fade-in, .slide-in-left, .slide-in-right, .scale-in"
     );
@@ -35,4 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }, 100);
-});
+}
+
+// Initialize on DOM load
+document.addEventListener("DOMContentLoaded", initializeAnimations);
+
+// Re-initialize on Livewire navigation
+document.addEventListener("livewire:navigated", initializeAnimations);
