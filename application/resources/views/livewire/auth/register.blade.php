@@ -1,66 +1,57 @@
 <x-layouts.auth>
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+        <!-- Header -->
+        <div class="mb-2">
+            <h1 class="text-center text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Daftar Akun</h1>
+            <p class="text-center text-sm sm:text-base text-gray-600">Buat akun baru untuk mengakses Carita.</p>
+        </div>
 
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-5">
             @csrf
 
             <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
+            <div class="space-y-2">
+                <flux:input name="name" type="text" required autofocus autocomplete="name"
+                    placeholder="Nama Lengkap" class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
+            </div>
 
             <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+            <div class="space-y-2">
+                <flux:input name="email" type="email" required autocomplete="email" placeholder="Johndoe@gmail.com"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
+            </div>
 
             <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                viewable
-            />
+            <div class="space-y-2">
+                <flux:input name="password" type="password" required autocomplete="new-password"
+                    placeholder="************" viewable
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
+            </div>
 
             <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                viewable
-            />
+            <div class="space-y-2">
+                <flux:input name="password_confirmation" type="password" required autocomplete="new-password"
+                    placeholder="Konfirmasi Password" viewable
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
+            </div>
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Create account') }}
+            <!-- Register Button -->
+            <div class="mt-2">
+                <flux:button variant="primary" type="submit"
+                    class="w-full bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300">
+                    Daftar
                 </flux:button>
             </div>
         </form>
 
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+        <div class="text-center text-sm text-gray-600">
+            <span>Sudah Memiliki Akun? </span>
+            <flux:link :href="route('login')" wire:navigate class="text-orange-600 hover:text-orange-700 font-medium">
+                Masuk
+            </flux:link>
         </div>
     </div>
 </x-layouts.auth>

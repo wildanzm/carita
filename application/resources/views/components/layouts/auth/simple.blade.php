@@ -1,22 +1,64 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
-    <head>
-        @include('partials.head')
-    </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div class="flex w-full max-w-sm flex-col gap-2">
-                <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
-                    <span class="flex h-9 w-9 mb-1 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
-                    </span>
-                    <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
-                </a>
-                <div class="flex flex-col gap-6">
-                    {{ $slot }}
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    @include('partials.head')
+    <style>
+        body {
+            background-color: #f5e6dc;
+        }
+
+        /* Remove focus outline from inputs */
+        input:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Make input text black */
+        input {
+            color: #000000 !important;
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Keep eye icon visible on hover */
+        button[aria-label*="password"]:hover,
+        button[type="button"]:hover {
+            opacity: 1 !important;
+        }
+
+        button[aria-label*="password"] svg,
+        button[type="button"] svg {
+            opacity: 1 !important;
+        }
+
+        /* Make submit buttons rounded full */
+        button[type="submit"] {
+            border-radius: 9999px !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen antialiased">
+    <div class="flex min-h-screen items-center justify-center p-4 sm:p-6 lg:p-8">
+        <!-- Card Container -->
+        <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div class="flex items-center justify-center p-6 sm:p-8 lg:p-12">
+                <div class="w-full">
+                    <div class="mb-8 text-center">
+                        <h2 class="font-bold text-amber-700 text-2xl lg:text-3xl">CARITA</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        {{ $slot }}
+                    </div>
                 </div>
             </div>
         </div>
-        @fluxScripts
-    </body>
+    </div>
+    @fluxScripts
+</body>
+
 </html>
