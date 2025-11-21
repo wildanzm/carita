@@ -1,39 +1,4 @@
 <div>
-    <!-- Mobile Menu -->
-    <div id="mobile-menu"
-        class="mobile-menu lg:hidden bg-white shadow-lg px-[5%] pb-5 fixed left-0 right-0 z-40 top-[88px] rounded-b-2xl">
-        <ul class="flex flex-col gap-4 font-semibold text-gray-800 mb-5 pt-4">
-            <li class="border-b border-gray-200 pb-2">
-                <a href="" class="block hover:text-amber-700 transition-colors duration-300">Beranda</a>
-            </li>
-            <li class="border-b border-gray-200 pb-2">
-                <a href="" class="block hover:text-amber-700 transition-colors duration-300">Explorasi Budaya</a>
-            </li>
-            <li class="border-b border-gray-200 pb-2">
-                <a href="" class="block hover:text-amber-700 transition-colors duration-300">Tentang Carita</a>
-            </li>
-            <li class="border-b border-gray-200 pb-2">
-                <a href="" class="block hover:text-amber-700 transition-colors duration-300">Untuk Perajin</a>
-            </li>
-        </ul>
-
-        <!-- Mobile Auth Buttons -->
-        <div class="flex flex-col gap-3">
-            @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/dashboard') }}"
-                        class="bg-amber-700 text-white px-8 py-2 rounded-full shadow-md text-center hover:bg-amber-800 transition-all duration-300">Dashboard</a>
-                @else
-                    <a href="{{ route('login') }}"
-                        class="bg-linear-to-br from-amber-700 to-amber-600 px-8 py-2 text-white rounded-full shadow-md text-center hover:shadow-lg transition-all duration-300">Login</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}"
-                            class="border border-amber-700 shadow-md px-8 py-2 text-amber-700 rounded-full text-center hover:bg-amber-700 hover:text-white transition-all duration-300">Register</a>
-                    @endif
-                @endauth
-            @endif
-        </div>
-    </div>
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center px-[5%] lg:px-[10%] pt-24 lg:pt-0 overflow-hidden"
@@ -66,7 +31,7 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="#"
+                    <a href="{{ route('upload-image') }}"
                         class="inline-flex items-center justify-center gap-2 bg-amber-700 hover:bg-amber-800 text-white py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 font-semibold">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
