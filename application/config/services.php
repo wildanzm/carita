@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'carita_ai' => [
+        'endpoint' => env('CARITA_AI_ENDPOINT', 'http://localhost:5000'),
+    ],
 ];

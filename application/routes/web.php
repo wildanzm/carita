@@ -11,7 +11,9 @@ use \App\Livewire\User\DetailStories;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
-Route::get("/upload", UploadImage::class)->name('upload-image');
+Route::get("/upload", UploadImage::class)
+    ->middleware(['auth', 'verified'])
+    ->name('upload-image');
 Route::get("/detail", DetailStories::class)->name('detail-stories');
 
 Route::view('dashboard', 'dashboard')

@@ -17,6 +17,7 @@ class GeneratedStory extends Model
         'image_path',
         'detected_motif',
         'narrative',
+        'caption',
         'qr_code_path',
         'source_chunk_ids',
     ];
