@@ -6,6 +6,16 @@
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
+@layer base {
+    :root,
+    html,
+    body {
+        color-scheme: light;
+        background-color: white;
+        @apply text-gray-800;
+    }
+}
+
 /* Hamburger Animation */
 .hamburger {
     cursor: pointer;
@@ -122,6 +132,11 @@
 
 .hero-image {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-image:hover {
+    transform: translateY(-10px) scale(1.05);
+    z-index: 10;
 }
 
 /* Floating Animation */
