@@ -1,0 +1,17 @@
+[
+  {
+    "id": "batik_gedong_gincu",
+    "text": "Batik Gedong Gincu terinspirasi dari mangga khas Majalengka. Motif ini melambangkan kesuburan tanah, kemanisam hidup, dan kerja keras petani. Warna oranye melambangkan semangat, hijau melambangkan alam.",
+    "metadata": { "source": "Wawancara Budayawan A, 2025", "category": "Batik", "is_sacred": "False" }
+  },
+  {
+    "id": "anyaman_salagedang",
+    "text": "Anyaman bambu Desa Salagedang memiliki pola 'bilik' yang rapat dan kuat. Filosofinya adalah tentang kekuataan gotong royong masyarakat desa yang saling menguatkan dan tidak mudah dipatahkan.",
+    "metadata": { "source": "Arsip Desa Salagedang", "category": "Anyaman", "is_sacred": "False" }
+  },
+  {
+    "id": "motif_simbar_kencana",
+    "text": "Motif Simbar Kencana berasal dari legenda Kerajaan Talaga Manggung. Motif ini sakral dan melambangkan kewibawaan serta perlindungan leluhur.",
+    "metadata": { "source": "Naskah Kuno Talaga", "category": "Batik", "is_sacred": "False" }
+  }
+]
