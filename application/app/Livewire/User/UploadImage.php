@@ -7,13 +7,13 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 
 
-#[Title('Home')]
+#[Title('Upload Image')]
 #[Layout('layouts.app')]
 
-class Home extends Component
+class UploadImage extends Component
 {
     public function render()
     {
-        return view('livewire.user.home');
+        return view('livewire.user.upload-image');
     }
 }
