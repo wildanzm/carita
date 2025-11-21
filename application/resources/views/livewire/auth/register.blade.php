@@ -20,22 +20,20 @@
 
             <!-- Email Address -->
             <div class="space-y-2">
-                <flux:input name="email" type="email" required autocomplete="email" placeholder="Johndoe@gmail.com"
+                <flux:input name="email" type="email" required autocomplete="email" placeholder="Masukan Email"
                     class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
             </div>
 
             <!-- Password -->
             <div class="space-y-2">
                 <flux:input name="password" type="password" required autocomplete="new-password"
-                    placeholder="************" viewable
-                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
+                    placeholder="Masukan Password" class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
             </div>
 
             <!-- Confirm Password -->
             <div class="space-y-2">
                 <flux:input name="password_confirmation" type="password" required autocomplete="new-password"
-                    placeholder="Konfirmasi Password" viewable
-                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
+                    placeholder="Konfirmasi Password" class="w-full px-4 py-3 border-2 border-gray-300 rounded-full" />
             </div>
 
             <!-- Register Button -->

@@ -173,6 +173,11 @@
         transform: scale(1.1);
     }
 }
+
+/* Livewire Progress Bar Customization */
+.livewire-progress-bar {
+    background-color: #f59e0b !important; /* amber-500 */
+}
 /* Mobile Menu Animation */
 .mobile-menu {
     max-height: 0;
