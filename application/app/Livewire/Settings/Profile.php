@@ -9,14 +9,24 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Livewire\WithFileUploads;
 
 #[Title('Profil')]
 #[Layout('layouts.sidebar')]
 class Profile extends Component
 {
+    use WithFileUploads;
+
     public string $name = '';
 
     public string $email = '';
+
+    public string $username = '';
+
+    public string $phone = '';
+
+    public $profile_photo_path;
 
     public bool $editMode = false;
 
@@ -27,6 +37,9 @@ class Profile extends Component
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->username = Auth::user()->username ?? '';
+        $this->phone = Auth::user()->phone ?? '';
+        $this->profile_photo_path = Auth::user()->profile_photo_path;
     }
 
     /**
@@ -47,7 +60,31 @@ class Profile extends Component
                 'max:255',
                 Rule::unique(User::class)->ignore($user->id),
             ],
+
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+                Rule::unique(User::class)->ignore($user->id),
+            ],
+
+            'phone' => ['nullable', 'string', 'max:20'],
+
+            'profile_photo_path' => ['nullable', 'image', 'max:2048'],
         ]);
+
+        // Handle profile photo upload
+        if ($this->profile_photo_path) {
+            // Delete old photo if exists
+            if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
+                Storage::disk('public')->delete($user->profile_photo_path);
+            }
+
+            // Store new photo
+            $path = $this->profile_photo_path->store('profile-photos', 'public');
+            $validated['profile_photo_path'] = $path;
+        }
 
         $user->fill($validated);
 
@@ -77,6 +114,9 @@ class Profile extends Component
         $this->editMode = false;
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->username = Auth::user()->username ?? '';
+        $this->phone = Auth::user()->phone ?? '';
+        $this->profile_photo_path = Auth::user()->profile_photo_path;
     }
 
     /**

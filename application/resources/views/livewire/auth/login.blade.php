@@ -32,6 +32,9 @@
                         placeholder="nama@email.com"
                         class="w-full pl-12 pr-4 py-1 border-2 border-gray-300 rounded-full focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all" />
                 </div>
+                @error('email')
+                    <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Password -->
@@ -49,6 +52,9 @@
                         placeholder="Masukkan password Anda"
                         class="w-full pl-12 pr-4 py-1 border-2 border-gray-300 rounded-full focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all" />
                 </div>
+                @error('password')
+                    <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Login Button -->
@@ -80,7 +86,7 @@
             <div class="text-center">
                 <p class="text-sm text-gray-600 mb-3">
                     Belum punya akun?
-                    <flux:link :href="route('register')" wire:navigate
+                    <flux:link :href="route('register')"
                         class="text-orange-600 hover:text-orange-700 font-medium">
                         Daftar Sekarang
                     </flux:link>

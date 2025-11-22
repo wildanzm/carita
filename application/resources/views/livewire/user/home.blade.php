@@ -31,7 +31,7 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="{{ route('upload-image') }}" wire:navigate
+                    <a href="{{ route('upload-image') }}"
                         class="inline-flex items-center justify-center gap-2 bg-amber-700 hover:bg-amber-800 text-white py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 font-semibold">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

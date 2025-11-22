@@ -5,6 +5,7 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use App\Models\Product;
 
 #[Title('Dashboard')]
 #[Layout('layouts.sidebar')]
@@ -16,10 +17,8 @@ class Dashboard extends Component
 
     public function mount()
     {
-        // Dummy data - nanti bisa diganti dengan data real dari database
-        $this->totalProducts = 24;
+        $this->totalProducts = Product::count();
         
-        // Data untuk 7 hari terakhir
         $this->clickStats = [
             'labels' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
             'data' => [45, 52, 38, 67, 71, 58, 63]
@@ -27,7 +26,7 @@ class Dashboard extends Component
         
         $this->viewStats = [
             'labels' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-            'data' => [120, 145, 128, 180, 195, 167, 175]
+            'data' => [49, 79, 81, 50, 67, 45, 100]
         ];
     }
 

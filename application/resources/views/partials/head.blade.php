@@ -12,4 +12,3 @@
 <link rel="stylesheet" href="https://unpkg.com/kursor/dist/kursor.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@fluxAppearance

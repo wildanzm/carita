@@ -19,11 +19,9 @@ return new class extends Migration
             // Data dasar produk
             $table->string('name');          // nama produk
             $table->string('slug');          // slug produk, nanti digabung dengan slug UMKM di route
-            $table->string('sku')->nullable();
 
             // Deskripsi jualan
-            $table->text('short_description')->nullable(); // buat highlight di card
-            $table->longText('description')->nullable();   // detail di halaman produk
+            $table->longText('description')->nullable();          // detail di halaman produk
 
             // Harga & stok
             $table->unsignedBigInteger('price')->nullable();   // atau pakai decimal kalau mau

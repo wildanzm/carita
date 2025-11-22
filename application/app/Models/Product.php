@@ -14,8 +14,6 @@ class Product extends Model
         'user_id',
         'name',
         'slug',
-        'sku',
-        'short_description',
         'description',
         'price',
         'stock',
