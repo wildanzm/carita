@@ -29,8 +29,8 @@ class StoryService
             'user_id'          => $user->id,
             'image_path'       => $imagePath,
             'detected_motif'   => $aiResult['detected_motif'] ?? null,
-            'narrative'        => $aiResult['narrative'] ?? '',
-            'caption'          => $aiResult['caption'] ?? null,
+            'narrative'        => $aiResult['context'] ?? ($aiResult['philosophical_context'] ?? ''), // Filosofi (panjang)
+            'caption'          => $aiResult['narrative'] ?? '', // Caption promosi (pendek)
             'source_chunk_ids' => $aiResult['source_chunk_ids'] ?? [],
         ]);
 

@@ -18,7 +18,8 @@ Route::get('/', Home::class)->name('home');
 Route::get("/upload", UploadImage::class)
     ->middleware(['auth', 'verified'])
     ->name('upload-image');
-Route::get("/detail", DetailStories::class)->name('detail-stories');
+// Route::get("/detail", DetailStories::class)->name('detail-stories');
+Route::get('/stories/{public_id}', DetailStories::class)->name('stories.public.show');
 
 Route::get('dashboard', Dashboard::class)
     ->middleware(['auth'])
