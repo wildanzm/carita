@@ -15,8 +15,10 @@ return new class extends Migration
         Schema::create('cultural_chunks', function (Blueprint $table) {
             $table->id();
             $table->string('title')->index(); // Judul chunk
+            $table->string('reference_image_path')->nullable(); // Gambar referensi terkait chunk
             $table->text('content'); // Narasi budaya lengkap
             $table->json('embedding')->nullable(); // Vektor AI (disimpan sebagai JSON array)
+            $table->json('visual_embedding')->nullable(); // Vektor visual AI
             $table->string('category', 50)->index(); // e.g. 'Batik', 'Sakral', 'Tradisi'
             $table->string('citation')->nullable(); // Sumber referensi (Wawancara, Buku)
             $table->boolean('is_sacred')->default(false)->index(); // Guardrail flag (Penting!)

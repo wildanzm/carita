@@ -80,7 +80,7 @@
             <div class="h-full glassmorphism rounded-r-3xl flex flex-col">
                 <!-- Logo Section -->
                 <div class="p-6 border-b border-gray-200/50">
-                    <a href="{{ route('home') }}" wire:navigate class="flex items-center gap-3 group">
+                    <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                         <div>
                             <h1 class="font-bold text-amber-700 text-2xl">Carita</h1>
                             <p class="text-xs text-gray-600">Cultural Stories</p>
@@ -95,7 +95,7 @@
                         </p>
 
                         <!-- Dashboard -->
-                        <a href="{{ route('dashboard') }}" wire:navigate
+                        <a href="{{ route('dashboard') }}"
                             class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-amber-700 group">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -104,6 +104,17 @@
                             </svg>
                             <span class="font-medium">Dashboard</span>
                         </a>
+
+                        <!-- Produk -->
+                        <a href="{{ route('product.index') }}"
+                            class="nav-item {{ request()->routeIs('product.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-amber-700 group">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
+                                </path>
+                            </svg>
+                            <span class="font-medium">Produk</span>
+                        </a>
                     </div>
 
                     <div class="border-t border-gray-200/50 pt-4 mt-4">
@@ -111,7 +122,7 @@
                         </p>
 
                         <!-- Profile -->
-                        <a href="{{ route('profile.edit') }}" wire:navigate
+                        <a href="{{ route('profile.edit') }}"
                             class="nav-item {{ request()->routeIs('profile.edit') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-amber-700 group">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -121,7 +132,7 @@
                         </a>
 
                         <!-- Password -->
-                        <a href="{{ route('user-password.edit') }}" wire:navigate
+                        <a href="{{ route('user-password.edit') }}"
                             class="nav-item {{ request()->routeIs('user-password.edit') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-amber-700 group">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -171,7 +182,6 @@
         </main>
     </div>
 
-    @fluxScripts
 </body>
 
 </html>

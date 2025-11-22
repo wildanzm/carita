@@ -298,8 +298,5 @@
 
         // Initialize charts on page load
         document.addEventListener('DOMContentLoaded', initCharts);
-
-        // Re-initialize charts on Livewire navigation
-        document.addEventListener('livewire:navigated', initCharts);
     </script>
 </div>

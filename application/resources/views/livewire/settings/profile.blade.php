@@ -30,6 +30,26 @@
         <div class="p-8 bg-white/50">
             @if (!$editMode)
                 <!-- View Mode -->
+                <div class="flex items-center gap-6 mb-8">
+                    <div
+                        class="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center border-4 border-white shadow-lg">
+                        @if ($profile_photo_path && Storage::disk('public')->exists($profile_photo_path))
+                            <img src="{{ Storage::url($profile_photo_path) }}" alt="Profile Photo"
+                                class="w-full h-full object-cover">
+                        @else
+                            <span
+                                class="text-3xl font-bold text-gray-600 text-center">{{ Auth::user()->initials() }}</span>
+                        @endif
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $name }}</h3>
+                        <p class="text-gray-600">{{ $email }}</p>
+                        @if ($username)
+                            <p class="text-sm text-gray-500">{{ $username }}</p>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('Name') }}</label>
@@ -42,6 +62,20 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('Email') }}</label>
                         <div class="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 font-medium">
                             {{ $email }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('Username') }}</label>
+                        <div class="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 font-medium">
+                            {{ $username ?: '-' }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('No. Handphone') }}</label>
+                        <div class="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 font-medium">
+                            {{ $phone ?: '-' }}
                         </div>
                     </div>
 
@@ -75,6 +109,42 @@
             @else
                 <!-- Edit Mode -->
                 <form wire:submit="updateProfileInformation" class="space-y-6">
+                    <!-- Profile Photo -->
+                    <div class="flex items-center gap-6 mb-6">
+                        <div
+                            class="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center border-4 border-white shadow-lg">
+                            @if ($profile_photo_path && is_object($profile_photo_path))
+                                <img src="{{ $profile_photo_path->temporaryUrl() }}" alt="Preview"
+                                    class="w-full h-full object-cover">
+                            @elseif($profile_photo_path)
+                                <img src="{{ Storage::url($profile_photo_path) }}" alt="Current Photo"
+                                    class="w-full h-full object-cover">
+                            @else
+                                <span class="text-3xl font-bold text-gray-600">{{ Auth::user()->initials() }}</span>
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <label
+                                class="block text-sm font-semibold text-gray-900 mb-2">{{ __('Foto Profil') }}</label>
+                            <div class="flex items-center gap-4">
+                                <label
+                                    class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg cursor-pointer transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                    </svg>
+                                    <span>{{ $profile_photo_path ? 'Ganti Foto' : 'Upload Foto' }}</span>
+                                    <input type="file" wire:model="profile_photo_path" accept="image/*"
+                                        class="hidden">
+                                </label>
+                                <p class="text-xs text-gray-500">Format: JPG, PNG (Maks. 2MB)</p>
+                            </div>
+                            @error('profile_photo_path')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-900 mb-2">{{ __('Name') }}</label>
@@ -90,6 +160,25 @@
                             <input wire:model="email" type="email" required autocomplete="email"
                                 class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all" />
                             @error('email')
+                                <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-900 mb-2">{{ __('Username') }}</label>
+                            <input wire:model="username" type="text" required autocomplete="username"
+                                class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all" />
+                            @error('username')
+                                <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-semibold text-gray-900 mb-2">{{ __('No. Handphone') }}</label>
+                            <input wire:model="phone" type="tel" autocomplete="tel"
+                                class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all" />
+                            @error('phone')
                                 <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>
