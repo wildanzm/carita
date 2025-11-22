@@ -2,16 +2,16 @@ from flask import Flask, request, jsonify, send_from_directory
 import os, uuid
 from dotenv import load_dotenv
 
-# Import Service Kita
+# Import Semua Service
 from services.vision import predict_image
 from services.storyteller import generate_story
-from services.designer import create_smart_poster
-# PENTING: Kita butuh ini buat mode tes mandiri
-from services.knowledge import get_motif_data 
+from services.knowledge import get_motif_data
+from services.designer import create_smart_poster # <--- Pastikan ini ada
 
 load_dotenv()
 app = Flask(__name__)
 
+# Konfigurasi Folder
 UPLOAD_FOLDER = 'temp_uploads'
 POSTER_FOLDER = 'static_posters'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -20,7 +20,7 @@ os.makedirs(POSTER_FOLDER, exist_ok=True)
 @app.route('/')
 def home(): return "CARITA AI Service Ready! 🚀"
 
-# --- ENDPOINT 1: ANALYZE (VISION + DATA LENGKAP) ---
+# --- ENDPOINT 1: ANALYZE (VISION) ---
 @app.route('/analyze', methods=['POST'])
 def analyze():
     if 'image' not in request.files: return jsonify({"error": "No image"}), 400
@@ -28,78 +28,93 @@ def analyze():
     path = os.path.join(UPLOAD_FOLDER, f"{uuid.uuid4()}_{file.filename}")
     file.save(path)
 
-    # 1. Vision Deteksi ID
+    # 1. Vision AI
     res = predict_image(path)
-    # os.remove(path) # Jangan hapus dulu biar aman
+    
+    # Hapus file temp gambar asli (tapi simpan path untuk poster jika perlu nanti)
+    # Untuk efisiensi, di flow nyata biasanya frontend kirim gambar lagi ke endpoint poster
+    # Jadi kita hapus saja di sini biar bersih.
+    os.remove(path) 
 
-    if not res: return jsonify({"error": "Vision fail"}), 500
+    if not res: 
+        return jsonify({
+            "status": "unknown",
+            "message": "Maaf, motif tidak terdeteksi sebagai ciri khas Majalengka."
+        }), 404
     
     motif_id = res['motif_id']
-
-    # 2. Ambil Data Tambahan dari JSON (Biar Test Script Gak Error)
     brain = get_motif_data(motif_id)
     
-    # 3. Cek Sakral
     if brain.get('is_sacred'):
-        return jsonify({"status": "blocked", "warning": "⚠️ Motif Sakral Terdeteksi!"})
+        return jsonify({
+            "status": "blocked", 
+            "warning": "⚠️ Motif Sakral Terdeteksi! Tidak dapat dikomersialkan."
+        })
 
-    # 4. RETURN DATA LENGKAP (Ini yang bikin error tadi kalau kurang)
     return jsonify({
         "status": "success",
         "data": {
             "motif_id": motif_id,
-            # KOREKSI UTAMA: Kita buat nama cantik dari ID
             "motif_name": motif_id.replace("_", " ").title(), 
             "confidence": res['confidence'],
-            # Ambil dari knowledge.py, kalau gak ada kasih default
-            "philosophical_context": brain.get('text', 'Deskripsi belum ada di database.'),
+            "philosophical_context": brain.get('text', 'Deskripsi belum tersedia.'),
             "category": brain.get('category', 'Umum'),
             "source": brain.get('source', 'Tim Riset')
         }
     })
 
-# --- ENDPOINT 2: COMPOSE STORY ---
+# --- ENDPOINT 2: COMPOSE STORY (LLM) ---
 @app.route('/compose-story', methods=['POST'])
 def compose():
     d = request.json
-    
-    # Cek input, bisa dari ID (Mode Mandiri) atau Data Mentah (Mode Integrasi)
-    if 'motif_id' in d:
-        # Mode Mandiri: Cari data sendiri
-        brain = get_motif_data(d['motif_id'])
-        name = d['motif_id'].replace("_", " ").title()
-        ctx = brain.get('text', '')
-        src = brain.get('source', '')
-    else:
-        # Mode Integrasi: Data dikirim Laravel
-        name = d.get('motif_name')
-        ctx = d.get('context_data')
-        src = d.get('source')
+    if not d or 'motif_name' not in d: return jsonify({"error": "Data tidak lengkap"}), 400
 
-    if not name: return jsonify({"error": "Data tidak lengkap"}), 400
+    name = d.get('motif_name')
+    ctx = d.get('context_data', '')
+    src = d.get('source', '')
+    lang = d.get('language', 'Indonesia')
 
-    story = generate_story(name, ctx, src, d.get('language', 'Indonesia'))
+    story = generate_story(name, ctx, src, lang)
     return jsonify({"status": "success", "story": story})
 
-# --- ENDPOINT 3: POSTER ---
+# --- ENDPOINT 3: GENERATE POSTER (DESIGNER) ---
 @app.route('/generate-poster', methods=['POST'])
-def poster():
-    if 'image' not in request.files: return jsonify({"error": "No image"}), 400
+def generate_poster_endpoint():
+    # Cek File
+    if 'image' not in request.files: return jsonify({"error": "No image uploaded"}), 400
     file = request.files['image']
     
-    in_path = os.path.join(UPLOAD_FOLDER, f"raw_{uuid.uuid4()}.jpg")
+    # Cek Data Teks
+    title = request.form.get('title', 'Karya Majalengka')
+    category = request.form.get('category', 'Umum')
+
+    # Simpan Sementara
+    in_path = os.path.join(UPLOAD_FOLDER, f"raw_poster_{uuid.uuid4()}.jpg")
     file.save(in_path)
     
-    out_name = f"poster_{uuid.uuid4()}.jpg"
+    # Nama File Output
+    out_filename = f"poster_{uuid.uuid4()}.jpg"
+    
     try:
-        create_smart_poster(in_path, request.form.get('title'), request.form.get('category'), out_name)
+        # Jalankan AI Designer
+        result_path = create_smart_poster(in_path, title, category, out_filename)
+        
+        # Hapus file mentah
         os.remove(in_path)
         
-        url = f"{request.host_url}static_posters/{out_name}"
-        return jsonify({"status": "success", "poster_url": url})
+        if result_path:
+            # Buat URL Publik
+            # Contoh: http://localhost:5000/static_posters/poster_123.jpg
+            poster_url = f"{request.host_url}static_posters/{out_filename}"
+            return jsonify({"status": "success", "poster_url": poster_url})
+        else:
+            return jsonify({"error": "Gagal membuat poster"}), 500
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# --- AKSES FILE POSTER ---
+# Ini penting supaya URL poster bisa dibuka di browser
 @app.route('/static_posters/<path:filename>')
 def serve_poster(filename):
     return send_from_directory(POSTER_FOLDER, filename)
