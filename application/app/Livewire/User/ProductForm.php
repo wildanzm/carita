@@ -25,6 +25,10 @@ class ProductForm extends Component
     public $existing_image;
     public $is_published = false;
     public $isEditing = false;
+    
+    // Story Selection
+    public $selectedStoryId = '';
+    public $stories = [];
 
     protected function rules()
     {
@@ -33,13 +37,18 @@ class ProductForm extends Component
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'main_image_path' => $this->isEditing ? 'nullable|image|max:2048' : 'required|image|max:2048',
+            'main_image_path' => $this->isEditing ? 'nullable|image|max:2048' : 'nullable|image|max:2048', // Made nullable if story image is used (handled in save)
             'is_published' => 'boolean',
+            'selectedStoryId' => 'nullable|exists:generated_stories,id',
         ];
     }
 
     public function mount($id = null)
     {
+        $this->stories = \App\Models\GeneratedStory::where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
         if ($id) {
             $product = ProductModel::where('user_id', Auth::id())->findOrFail($id);
             
@@ -50,7 +59,24 @@ class ProductForm extends Component
             $this->stock = $product->stock;
             $this->existing_image = $product->main_image_path;
             $this->is_published = $product->is_published;
+            $this->selectedStoryId = $product->generated_story_id;
             $this->isEditing = true;
+        }
+    }
+
+    public function updatedSelectedStoryId($value)
+    {
+        if ($value) {
+            $story = $this->stories->firstWhere('id', $value);
+            if ($story) {
+                // Auto-fill name (Always overwrite when selecting a story)
+                $this->name = $story->detected_motif;
+
+                // Auto-fill description with structured content
+                $this->description = $story->caption . "\n\n" . 
+                                   "--- FILOSOFI & MAKNA BUDAYA ---\n\n" . 
+                                   $story->narrative;
+            }
         }
     }
 
@@ -71,12 +97,19 @@ class ProductForm extends Component
             'price' => $this->price,
             'stock' => $this->stock,
             'is_published' => $this->is_published,
+            'generated_story_id' => $this->selectedStoryId ?: null,
         ];
 
         // Handle image upload
         if ($this->main_image_path && is_object($this->main_image_path)) {
             $path = $this->main_image_path->store('products', 'public');
             $data['main_image_path'] = $path;
+        } elseif ($this->selectedStoryId && !$this->existing_image) {
+            // Use story image if no product image is uploaded
+            $story = $this->stories->firstWhere('id', $this->selectedStoryId);
+            if ($story) {
+                $data['main_image_path'] = $story->image_path;
+            }
         }
 
         if ($this->isEditing) {

@@ -23,6 +23,56 @@
 
     <!-- Form -->
     <form wire:submit="save" class="space-y-6">
+        <!-- Import from AI Story -->
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl shadow-sm border border-amber-200 p-6">
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-amber-900 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Isi Otomatis dengan AI Carita
+                    </h2>
+                    <p class="text-sm text-amber-800/80 mt-1">
+                        Pilih hasil analisis motif yang sudah Anda buat untuk mengisi nama, deskripsi, dan foto produk secara otomatis.
+                    </p>
+                </div>
+                <a href="{{ route('upload-image') }}"
+                    class="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-white border border-amber-200 text-amber-700 text-sm font-semibold rounded-lg hover:bg-amber-50 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Scan Motif Baru
+                </a>
+            </div>
+
+            @if(count($stories) > 0)
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($stories as $story)
+                        <label class="relative cursor-pointer group block">
+                            <input type="radio" wire:model.live="selectedStoryId" value="{{ $story->id }}" class="sr-only">
+                            <div class="p-3 bg-white border-2 rounded-xl transition-all duration-200 hover:border-amber-300 {{ $selectedStoryId == $story->id ? 'border-amber-600 bg-amber-50 ring-1 ring-amber-600' : 'border-gray-200' }}">
+                                <div class="flex items-start gap-3">
+                                    <img src="{{ Storage::url($story->image_path) }}" class="w-12 h-12 rounded-lg object-cover bg-gray-100" alt="Thumbnail">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-bold text-gray-900 truncate">{{ $story->detected_motif }}</p>
+                                        <p class="text-xs text-gray-500">{{ $story->created_at->format('d M Y') }}</p>
+                                    </div>
+                                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center {{ $selectedStoryId == $story->id ? 'border-amber-600 bg-amber-600' : 'border-gray-300' }}">
+                                        <svg class="w-3 h-3 text-white {{ $selectedStoryId == $story->id ? 'opacity-100' : 'opacity-0' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-6 bg-white/50 rounded-lg border border-dashed border-amber-200">
+                    <p class="text-sm text-amber-800">Belum ada riwayat analisis motif.</p>
+                </div>
+            @endif
+        </div>
         <!-- Main Image Upload -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <label class="block text-sm font-semibold text-gray-900 mb-4">
