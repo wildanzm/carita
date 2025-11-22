@@ -5,3 +5,4 @@ pillow
 sentence-transformers
 chromadb
 groq
+mysql-connector-python
