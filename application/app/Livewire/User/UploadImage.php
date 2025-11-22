@@ -5,9 +5,9 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Services\StoryService;
+use App\Services\AiStoryService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
-use App\Services\AiStoryService;
 
 #[Title('Upload Image')]
 #[Layout('layouts.app')]
@@ -16,41 +16,60 @@ class UploadImage extends Component
     use WithFileUploads;
 
     public $image;
-    public $isLoading = false;
-    public $errorMessage;
+    public bool $isLoading = false;
+    public ?string $errorMessage = null;
 
-    public $aiResult = null; // hasil mentah dari AI (preview saja)
-    public $story = null;    // GeneratedStory yang sudah dipublish
+    public ?array $aiResult = null;
+    public $story = null;
 
-    protected $rules = [
-        'image' => 'required|image|max:5120', // 5MB
-    ];
+    public string $captionLanguage = 'id';
+    public ?string $customLanguage = null;
+
+    protected function rules(): array
+    {
+        return [
+            'image'           => 'required|image|max:5120', // 5MB
+            'captionLanguage' => 'required|in:id,su,en',
+            // wajib diisi kalau pilih custom
+            'customLanguage'  => 'nullable|string|max:150|required_if:captionLanguage,custom',
+        ];
+    }
 
     public function render()
     {
         return view('livewire.user.upload-image');
     }
 
-    /**
-     * Tahap 1: Analisa gambar dengan AI (tanpa simpan, tanpa QR)
-     */
+    public function updatedImage()
+    {
+        // Reset hasil lama, tapi TIDAK reset captionLanguage (biar pilihan user tetap)
+        $this->reset(['aiResult', 'story', 'errorMessage']);
+    }
+
     public function analyze(AiStoryService $aiStoryService)
     {
+        // Validasi image + captionLanguage (+ custom kalau perlu)
         $this->validate();
+
         $this->reset(['errorMessage', 'aiResult', 'story']); // reset hasil lama
         $this->isLoading = true;
 
         try {
-            $aiResult = $aiStoryService->generateFromImage($this->image);
+            // kirim juga pilihan bahasa ke service AI
+            $aiResult = $aiStoryService->generateFromImage(
+                $this->image,
+                $this->captionLanguage,
+                $this->customLanguage
+            );
 
-            // Guardrail sakral
-            if (! empty($aiResult['is_sacred']) && $aiResult['is_sacred'] === true) {
-                $this->errorMessage = 'Motif ini ditandai sebagai [Sakral] dan tidak dapat digunakan untuk tujuan komersial.';
+            if (!empty($aiResult['is_sacred']) && $aiResult['is_sacred'] === true) {
+                $this->errorMessage = $aiResult['warning']
+                    ?? 'Motif ini ditandai sebagai [Sakral] dan tidak dapat digunakan untuk tujuan komersial.';
                 return;
             }
 
-            // SIMPAN sementara hasil AI di state (belum ke DB)
             $this->aiResult = $aiResult;
+            // dd($this->aiResult);
         } catch (\Throwable $e) {
             report($e);
             $this->errorMessage = 'Terjadi kesalahan saat memproses gambar. Silakan coba lagi.';
@@ -66,8 +85,7 @@ class UploadImage extends Component
     {
         $this->reset('errorMessage');
 
-        // Pastikan sudah ada hasil AI & file
-        if (! $this->image || ! $this->aiResult) {
+        if (!$this->image || !$this->aiResult) {
             $this->errorMessage = 'Silakan unggah dan proses gambar dengan AI terlebih dahulu.';
             return;
         }
@@ -75,13 +93,12 @@ class UploadImage extends Component
         try {
             $this->isLoading = true;
 
-            // Simpan story + QR memakai StoryService
             $this->story = $storyService->createStoryFromAiResult(
                 $this->image,
                 $this->aiResult
             );
 
-            // Setelah publish, kita bisa reset image & aiResult
+            // reset file & draft, tapi bahasa tetap
             $this->reset(['image', 'aiResult']);
         } catch (\Throwable $e) {
             report($e);
