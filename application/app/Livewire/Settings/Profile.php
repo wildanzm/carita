@@ -3,16 +3,22 @@
 namespace App\Livewire\Settings;
 
 use App\Models\User;
+use Livewire\Component;
+use Livewire\Attributes\Title;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
-use Livewire\Component;
 
+#[Title('Profil')]
+#[Layout('layouts.sidebar')]
 class Profile extends Component
 {
     public string $name = '';
 
     public string $email = '';
+
+    public bool $editMode = false;
 
     /**
      * Mount the component.
@@ -52,6 +58,25 @@ class Profile extends Component
         $user->save();
 
         $this->dispatch('profile-updated', name: $user->name);
+        $this->editMode = false;
+    }
+
+    /**
+     * Enable edit mode.
+     */
+    public function enableEdit(): void
+    {
+        $this->editMode = true;
+    }
+
+    /**
+     * Cancel edit and reset to original values.
+     */
+    public function cancelEdit(): void
+    {
+        $this->editMode = false;
+        $this->name = Auth::user()->name;
+        $this->email = Auth::user()->email;
     }
 
     /**
@@ -70,5 +95,13 @@ class Profile extends Component
         $user->sendEmailVerificationNotification();
 
         Session::flash('status', 'verification-link-sent');
+    }
+
+    /**
+     * Render the component.
+     */
+    public function render()
+    {
+        return view('livewire.settings.profile');
     }
 }

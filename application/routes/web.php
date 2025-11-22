@@ -2,12 +2,13 @@
 
 use App\Livewire\User\Home;
 use Laravel\Fortify\Features;
+use App\Livewire\User\Dashboard;
 use App\Livewire\Settings\Profile;
+use App\Livewire\User\UploadImage;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\TwoFactor;
-use App\Livewire\Settings\Appearance;
-use App\Livewire\User\UploadImage;
 use \App\Livewire\User\DetailStories;
+use App\Livewire\Settings\Appearance;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
@@ -16,8 +17,8 @@ Route::get("/upload", UploadImage::class)
     ->name('upload-image');
 Route::get("/detail", DetailStories::class)->name('detail-stories');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+Route::get('dashboard', Dashboard::class)
+    ->middleware(['auth'])
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {

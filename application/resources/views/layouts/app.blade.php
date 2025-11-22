@@ -60,30 +60,24 @@
                         {{ explode(' ', auth()->user()->name)[0] }}</span>
                 </button>
 
-                <!-- Dropdown Menu -->
-                <div
-                    class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100">
-                    <div class="py-2">
-                        <a href="{{ url('/dashboard') }}" wire:navigate
-                            class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
-                            Dashboard
-                        </a>
-                        <a href="#" wire:navigate
-                            class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
-                            Profil
-                        </a>
-                        <a href="#" wire:navigate
-                            class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
-                            Pengaturan
-                        </a>
-                        <div class="border-t border-gray-100 my-2"></div>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200">
-                                Logout
-                            </button>
-                        </form>
+                        <!-- Dropdown Menu -->
+                        <div
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100">
+                            <div class="py-2">
+                                <a href="{{ url('/dashboard') }}" wire:navigate
+                                    class="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-700 transition-colors duration-200">
+                                    Dashboard
+                                </a>
+                                <div class="border-t border-gray-100 my-2"></div>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
