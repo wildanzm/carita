@@ -1,17 +1,32 @@
 [
   {
     "id": "batik_gedong_gincu",
-    "text": "Batik Gedong Gincu terinspirasi dari mangga khas Majalengka. Motif ini melambangkan kesuburan tanah, kemanisam hidup, dan kerja keras petani. Warna oranye melambangkan semangat, hijau melambangkan alam.",
+    "text": "Batik Gedong Gincu terinspirasi dari mangga khas Majalengka. Motif ini melambangkan kesuburan tanah, kemanisan hidup, dan kerja keras petani. Warna oranye melambangkan semangat, hijau melambangkan alam.",
     "metadata": { "source": "Wawancara Budayawan A, 2025", "category": "Batik", "is_sacred": "False" }
   },
   {
-    "id": "anyaman_salagedang",
-    "text": "Anyaman bambu Desa Salagedang memiliki pola 'bilik' yang rapat dan kuat. Filosofinya adalah tentang kekuataan gotong royong masyarakat desa yang saling menguatkan dan tidak mudah dipatahkan.",
-    "metadata": { "source": "Arsip Desa Salagedang", "category": "Anyaman", "is_sacred": "False" }
+    "id": "anyaman_boboko",
+    "text": "Boboko adalah bakul nasi tradisional khas Desa Salagedang. Wadah anyaman bambu berbentuk cekung ini dirancang khusus agar nasi tetap hangat dan tidak cepat basi (sirkulasi udara baik). Bermula dari kebutuhan alat rumah tangga sehari-hari, Boboko kini menjadi simbol kearifan lokal dalam mengolah bambu menjadi benda fungsional yang estetis.",
+    "metadata": { "source": "Tradisi Anyaman Desa Salagedang", "category": "Kriya", "is_sacred": "False" }
+  },
+  {
+    "id": "anyaman_nyiru",
+    "text": "Nyiru (Tampah) adalah anyaman bambu berbentuk bundar datar yang ikonik di Desa Salagedang. Secara fungsi, ia digunakan untuk menampi beras (memisahkan gabah). Secara filosofis, Nyiru melambangkan kearifan untuk 'memilah'—memisahkan hal baik dan buruk dalam kehidupan sebelum mengambil keputusan. Bentuk lingkarannya juga melambangkan kebulatan tekad.",
+    "metadata": { "source": "Tradisi Anyaman Desa Salagedang", "category": "Kriya", "is_sacred": "False" }
+  },
+  {
+    "id": "anyaman_aseupan",
+    "text": "Aseupan adalah anyaman bambu berbentuk kerucut yang berfungsi sebagai alat pengukus nasi (nyangu). Bentuknya yang lancip ke atas memiliki filosofi mendalam tentang hubungan vertikal manusia dengan Sang Pencipta (Manunggaling Kawula Gusti). Dalam tradisi Sunda, Aseupan juga digunakan untuk mencetak Tumpeng, simbol rasa syukur dan kesungguhan doa yang memuncak pada satu tujuan.",
+    "metadata": { "source": "Tradisi Anyaman Desa Salagedang", "category": "Kriya", "is_sacred": "False" }
   },
   {
     "id": "motif_simbar_kencana",
-    "text": "Motif Simbar Kencana berasal dari legenda Kerajaan Talaga Manggung. Motif ini sakral dan melambangkan kewibawaan serta perlindungan leluhur.",
-    "metadata": { "source": "Naskah Kuno Talaga", "category": "Batik", "is_sacred": "False" }
+    "text": "Motif ini adalah penghormatan bagi Ratu Simbar Kancana, penguasa Kerajaan Talaga Manggung (Abad ke-8 M) yang dikenal gesit, lincah, dan pandai berdiplomasi. Polanya memiliki dua elemen kunci: 'Mahkota' yang selalu melekat pada sang Ratu (simbol kemuliaan) dan 'Kujang' (simbol hubungan erat dengan Kerajaan Pajajaran). Motif ini adalah lambang kesejahteraan dan kejayaan puncak masyarakat Majalengka.",
+    "metadata": { "source": "Sejarah Kerajaan Talaga Manggung", "category": "Batik", "is_sacred": "True" }
+  },
+  {
+    "id": "batik_kota_angin",
+    "text": "Motif ini memvisualisasikan julukan Majalengka sebagai 'Kota Angin'. Polanya menggambarkan delapan penjuru mata angin yang melambangkan kekuatan, keperkasaan, dan kewibawaan. Filosofi ini mencerminkan keteguhan, kesigapan, dan keberanian masyarakat Majalengka yang selaras dengan kondisi alamnya yang dinamis.",
+    "metadata": { "source": "Paper Kajian Batik Majalengka", "category": "Batik", "is_sacred": "False" }
   }
 ]
