@@ -29,7 +29,7 @@
                 <div
                     class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_50px_-12px_rgba(120,53,15,0.25)] border-4 border-white bg-white">
                     <img src="{{ Storage::url($story->image_path) }}" alt="{{ $story->detected_motif }}"
-                        class="w-full aspect-[3/4] object-cover hover:scale-105 transition-transform duration-700 ease-out">
+                        class="w-full aspect-[1] object-cover hover:scale-105 transition-transform duration-700 ease-out">
 
                     {{-- Overlay Gradient for text readability if needed, though we keep it clean --}}
                     <div class="absolute inset-0 pointer-events-none shadow-inner rounded-[2rem]"></div>
@@ -122,10 +122,12 @@
                         </a>
                         @endif
                         
-                        {{-- Fallback or Secondary Action --}}
-                        <button class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl">
-                            Lihat Profil
-                        </button>
+                        @if(Auth::check() && Auth::id() === $story->user_id)
+                        <a href="{{ route('my-stories') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            My Stories
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>

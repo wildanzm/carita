@@ -112,7 +112,7 @@ class AiStoryService
     {
         return match ($code) {
             'id'   => 'Indonesia – Santai untuk caption UMKM',
-            // 'id_formal' => 'Indonesia – Formal / katalog produk',
+            'santai' => 'santai',
             'su'        => 'Bahasa Sunda',
             'en'        => 'Inggris',
 
@@ -125,7 +125,7 @@ class AiStoryService
         // Ini yang benar-benar dikirim ke Flask sebagai "language"
         return match ($code) {
             'id'   => 'Indonesia',
-            // 'id_formal' => 'Bahasa Indonesia formal seperti katalog produk',
+           'santai' => 'santai',
             'su'        => 'Sunda',
             'en'        => 'Inggris',
 

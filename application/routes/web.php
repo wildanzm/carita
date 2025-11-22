@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('products', Product::class)->name('product.index');
     Route::get('products/create', ProductForm::class)->name('product.create');
     Route::get('products/{id}/edit', ProductForm::class)->name('product.edit');
+    Route::get('my-stories', \App\Livewire\User\MyStories::class)->name('my-stories');
 });
 
 Route::middleware(['auth'])->group(function () {

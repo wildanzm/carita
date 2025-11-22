@@ -29,7 +29,7 @@ class UploadImage extends Component
     {
         return [
             'image'           => 'required|image|max:5120', // 5MB
-            'captionLanguage' => 'required|in:id,su,en',
+            'captionLanguage' => 'required|in:id,santai,su,en',
             // wajib diisi kalau pilih custom
             'customLanguage'  => 'nullable|string|max:150|required_if:captionLanguage,custom',
         ];
@@ -40,10 +40,12 @@ class UploadImage extends Component
         return view('livewire.user.upload-image');
     }
 
+    public $showSacredModal = false;
+
     public function updatedImage()
     {
         // Reset hasil lama, tapi TIDAK reset captionLanguage (biar pilihan user tetap)
-        $this->reset(['aiResult', 'story', 'errorMessage']);
+        $this->reset(['aiResult', 'story', 'errorMessage', 'showSacredModal']);
     }
 
     public function analyze(AiStoryService $aiStoryService)
@@ -51,7 +53,7 @@ class UploadImage extends Component
         // Validasi image + captionLanguage (+ custom kalau perlu)
         $this->validate();
 
-        $this->reset(['errorMessage', 'aiResult', 'story']); // reset hasil lama
+        $this->reset(['errorMessage', 'aiResult', 'story', 'showSacredModal']); // reset hasil lama
         $this->isLoading = true;
 
         try {
@@ -65,6 +67,7 @@ class UploadImage extends Component
             if (!empty($aiResult['is_sacred']) && $aiResult['is_sacred'] === true) {
                 $this->errorMessage = $aiResult['warning']
                     ?? 'Motif ini ditandai sebagai [Sakral] dan tidak dapat digunakan untuk tujuan komersial.';
+                $this->showSacredModal = true;
                 return;
             }
 
