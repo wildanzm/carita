@@ -17,8 +17,10 @@ class CulturalChunk extends Model
      */
     protected $fillable = [
         'title',
+        'reference_image_path',
         'content',
         'embedding',
+        'visual_embedding',
         'category',
         'citation',
         'is_sacred',

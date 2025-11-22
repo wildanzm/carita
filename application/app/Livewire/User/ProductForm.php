@@ -73,9 +73,9 @@ class ProductForm extends Component
                 $this->name = $story->detected_motif;
 
                 // Auto-fill description with structured content
-                $this->description = $story->caption . "\n\n" . 
-                                   "--- FILOSOFI & MAKNA BUDAYA ---\n\n" . 
-                                   $story->narrative;
+                $this->description =$story->narrative."\n\n". 
+                                   "FILOSOFI & MAKNA BUDAYA\n\n". 
+                                   $story->caption;
 
                 // Auto-fill image preview
                 $this->existing_image = $story->image_path;
