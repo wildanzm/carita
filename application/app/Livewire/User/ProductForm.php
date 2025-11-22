@@ -76,6 +76,10 @@ class ProductForm extends Component
                 $this->description = $story->caption . "\n\n" . 
                                    "--- FILOSOFI & MAKNA BUDAYA ---\n\n" . 
                                    $story->narrative;
+
+                // Auto-fill image preview
+                $this->existing_image = $story->image_path;
+                $this->reset('main_image_path');
             }
         }
     }
@@ -104,7 +108,7 @@ class ProductForm extends Component
         if ($this->main_image_path && is_object($this->main_image_path)) {
             $path = $this->main_image_path->store('products', 'public');
             $data['main_image_path'] = $path;
-        } elseif ($this->selectedStoryId && !$this->existing_image) {
+        } elseif ($this->selectedStoryId) {
             // Use story image if no product image is uploaded
             $story = $this->stories->firstWhere('id', $this->selectedStoryId);
             if ($story) {
