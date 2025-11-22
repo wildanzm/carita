@@ -6,7 +6,7 @@ import json
 BASE_URL = "http://localhost:5000"
 
 # Tentukan gambar tes (Sesuaikan dengan nama file di folder imgtest kamu)
-TEST_IMAGE_PATH = os.path.join("imgtest", "test_anyaman.jpg") 
+TEST_IMAGE_PATH = os.path.join("imgtest", "simbarkencana.jpg") 
 
 def print_separator(title):
     print("\n" + "="*50)
@@ -53,7 +53,7 @@ def test_2_storyteller(motif_data):
         "motif_name": motif_data['motif_name'],
         "context_data": motif_data['philosophical_context'],
         "source": motif_data['source'],
-        "language": "Sunda" # Kita coba request Bahasa Sunda
+        "language": "indonesia" # Kita coba request Bahasa Sunda
     }
 
     print(f"📤 Mengirim prompt untuk motif: {payload['motif_name']}...")
