@@ -2,11 +2,10 @@ import requests
 import os
 import json
 
-# Konfigurasi URL (Server Flask berjalan di port 5000)
+# Konfigurasi URL
 BASE_URL = "http://localhost:5000"
-
-# Tentukan gambar tes (Sesuaikan dengan nama file di folder imgtest kamu)
-TEST_IMAGE_PATH = os.path.join("imgtest", "simbarkencana.jpg") 
+# Tentukan gambar tes
+TEST_IMAGE_PATH = os.path.join("imgtest", "gedonggincu1.jpg") 
 
 def print_separator(title):
     print("\n" + "="*50)
@@ -27,11 +26,15 @@ def test_1_analyze():
             files = {'image': img}
             response = requests.post(url, files=files)
         
+        # LOGIKA KETAT: Hanya terima 200 OK
         if response.status_code == 200:
             data = response.json()
             print("✅ SUKSES! Hasil Analisa:")
-            print(json.dumps(data, indent=2)) # Print rapi
-            return data['data'] # Kembalikan data untuk tes selanjutnya
+            print(json.dumps(data, indent=2))
+            return data['data'] # Kembalikan data valid
+        elif response.status_code == 404:
+            print("⛔ UNKNOWN: Motif tidak dikenali (Sesuai harapan untuk motif asing).")
+            return None
         else:
             print(f"❌ GAGAL ({response.status_code}):", response.text)
             return None
@@ -42,25 +45,22 @@ def test_1_analyze():
 def test_2_storyteller(motif_data):
     print_separator("TES 2: GENERATE CERITA (LLM)")
     
+    # CEGAH JALAN KALAU DATA KOSONG
     if not motif_data:
-        print("⚠️ Skip tes ini karena Tes 1 gagal (tidak ada data motif).")
+        print("⚠️ SKIP: Tes dilewati karena Analisa Gagal/Unknown.")
         return
 
     url = f"{BASE_URL}/compose-story"
-    
-    # Simulasi data yang dikirim Backend Laravel
     payload = {
         "motif_name": motif_data['motif_name'],
         "context_data": motif_data['philosophical_context'],
         "source": motif_data['source'],
-        "language": "indonesia" # Kita coba request Bahasa Sunda
+        "language": "Sunda"
     }
 
     print(f"📤 Mengirim prompt untuk motif: {payload['motif_name']}...")
-
     try:
         response = requests.post(url, json=payload)
-        
         if response.status_code == 200:
             res_json = response.json()
             print("✅ SUKSES! Cerita Terbuat:")
@@ -75,13 +75,19 @@ def test_2_storyteller(motif_data):
 def test_3_poster(motif_data):
     print_separator("TES 3: GENERATE POSTER")
     
+    # CEGAH JALAN KALAU DATA KOSONG (PERBAIKAN UTAMA)
+    if not motif_data:
+        print("⛔ SKIP: Poster TIDAK DIBUAT karena motif tidak valid/unknown.")
+        print("   (Ini perilaku yang BENAR. Sistem menolak memproses motif asing).")
+        return
+
     if not os.path.exists(TEST_IMAGE_PATH): return
 
     url = f"{BASE_URL}/generate-poster"
     
-    # Gunakan nama motif dari hasil tes 1, atau default
-    title = motif_data['motif_name'] if motif_data else "Batik Majalengka"
-    category = motif_data['category'] if motif_data else "Batik"
+    # Ambil data asli dari hasil analisa
+    title = motif_data['motif_name']
+    category = motif_data['category']
 
     print(f"🎨 Membuat poster untuk '{title}'...")
 
@@ -95,7 +101,6 @@ def test_3_poster(motif_data):
             res_json = response.json()
             print("✅ SUKSES! Poster jadi di:")
             print(res_json['poster_url'])
-            print("(Cek folder 'static_posters' di laptopmu untuk melihat hasilnya)")
         else:
             print(f"❌ GAGAL ({response.status_code}):", response.text)
 
@@ -103,17 +108,14 @@ def test_3_poster(motif_data):
         print(f"❌ Error Koneksi: {e}")
 
 if __name__ == "__main__":
-    # Cek server nyala atau belum
     try:
         requests.get(BASE_URL)
         print("🚀 Server terdeteksi online!")
         
-        # JALANKAN RANGKAIAN TES
-        hasil_analisa = test_1_analyze()
-        test_2_storyteller(hasil_analisa)
-        test_3_poster(hasil_analisa)
+        # ALUR DATA YANG BENAR
+        hasil_analisa = test_1_analyze()     # Langkah 1
+        test_2_storyteller(hasil_analisa)    # Langkah 2 (Cuma jalan kalau 1 sukses)
+        test_3_poster(hasil_analisa)         # Langkah 3 (Cuma jalan kalau 1 sukses)
         
     except requests.exceptions.ConnectionError:
         print("\n⛔ ERROR FATAL: Server Flask belum jalan!")
-        print("👉 Buka terminal BARU, lalu jalankan: python app.py")
-        print("👉 Setelah server nyala, baru jalankan script tes ini lagi.")
