@@ -12,13 +12,13 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\User\Product;
 use App\Livewire\User\ProductForm;
 use App\Livewire\User\ListProduct;
+use App\Livewire\User\DetailProduct;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
 Route::get("/upload", UploadImage::class)
     ->middleware(['auth', 'verified'])
     ->name('upload-image');
-// Route::get("/detail", DetailStories::class)->name('detail-stories');
 Route::get('/stories/{public_id}', DetailStories::class)->name('stories.public.show');
 
 Route::get('dashboard', Dashboard::class)
@@ -53,3 +53,4 @@ Route::middleware(['auth'])->group(function () {
 
 // Route untuk halaman publik produk user (harus di bagian paling bawah)
 Route::get('/{username}', ListProduct::class)->name('user.products');
+Route::get('/{username}/product/{slug}', DetailProduct::class)->name('product.detail');

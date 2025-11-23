@@ -70,22 +70,102 @@
         .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
             background: rgba(180, 83, 9, 0.5);
         }
+
+        /* Mobile Sidebar Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Mobile Sidebar Animation */
+        @media (max-width: 1024px) {
+            .mobile-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .mobile-sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .nav-item:hover {
+                transform: translateX(4px);
+            }
+        }
     </style>
 </head>
 
 <body class="min-h-screen">
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 z-50 glassmorphism border-b border-gray-200/50">
+        <div class="flex items-center justify-between px-4 py-3">
+            <!-- Hamburger Menu -->
+            <button type="button" id="mobile-menu-button" class="p-2 rounded-lg hover:bg-gray-100/50 transition-colors">
+                <svg class="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+
+            <!-- Centered Logo -->
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <a href="{{ route('home') }}" class="flex flex-col items-center">
+                    <h1 class="font-bold text-amber-700 text-xl">Carita</h1>
+                    <p class="text-[10px] text-gray-600">Cultural Stories</p>
+                </a>
+            </div>
+
+            <!-- User Avatar -->
+            <div
+                class="w-9 h-9 bg-gradient-to-br from-amber-700 to-amber-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg">
+                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 fixed left-0 top-0 h-screen z-40">
-            <div class="h-full glassmorphism rounded-r-3xl flex flex-col">
-                <!-- Logo Section -->
-                <div class="p-6 border-b border-gray-200/50">
+        <aside id="sidebar" class="w-64 fixed left-0 top-0 h-screen z-40 mobile-sidebar lg:transform-none">
+            <div class="h-full glassmorphism lg:rounded-r-3xl flex flex-col">
+                <!-- Logo Section - Hidden on Mobile -->
+                <div class="hidden lg:block p-6 border-b border-gray-200/50">
                     <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                         <div>
                             <h1 class="font-bold text-amber-700 text-2xl">Carita</h1>
                             <p class="text-xs text-gray-600">Cultural Stories</p>
                         </div>
                     </a>
+                </div>
+
+                <!-- Mobile Header Inside Sidebar -->
+                <div class="lg:hidden p-4 border-b border-gray-200/50 flex items-center justify-between">
+                    <div>
+                        <h1 class="font-bold text-amber-700 text-xl">Carita</h1>
+                        <p class="text-xs text-gray-600">Cultural Stories</p>
+                    </div>
+                    <button type="button" onclick="toggleMobileSidebar()"
+                        class="p-2 rounded-lg hover:bg-gray-100/50 transition-colors">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
                 </div>
 
                 <!-- Navigation Menu -->
@@ -188,12 +268,102 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 ml-64 p-8">
+        <main class="flex-1 lg:ml-64 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
             <div class="max-w-7xl mx-auto">
                 {{ $slot }}
             </div>
         </main>
     </div>
+
+    <script>
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const menuButton = document.getElementById('mobile-menu-button');
+
+            // Hamburger menu click handler
+            if (menuButton) {
+                menuButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleMobileSidebar();
+                });
+            }
+
+            // Overlay click handler
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    toggleMobileSidebar();
+                });
+            }
+
+            // Navigation links click handler for mobile
+            const navLinks = document.querySelectorAll('.nav-item');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    closeMobileSidebar();
+                });
+            });
+        });
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+
+                // Prevent body scroll when sidebar is open
+                if (sidebar.classList.contains('open')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        function closeMobileSidebar() {
+            if (window.innerWidth < 1024) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = document.getElementById('mobile-menu-button');
+
+            if (sidebar && menuButton &&
+                window.innerWidth < 1024 &&
+                sidebar.classList.contains('open') &&
+                !sidebar.contains(event.target) &&
+                !menuButton.contains(event.target)) {
+                closeMobileSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+    </script>
 
 </body>
 

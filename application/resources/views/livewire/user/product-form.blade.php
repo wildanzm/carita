@@ -35,7 +35,8 @@
                         Isi Otomatis dengan AI Carita
                     </h2>
                     <p class="text-sm text-amber-800/80 mt-1">
-                        Pilih hasil analisis motif yang sudah Anda buat untuk mengisi nama, deskripsi, dan foto produk secara otomatis.
+                        Pilih hasil analisis motif yang sudah Anda buat untuk mengisi nama, deskripsi, dan foto produk
+                        secara otomatis.
                     </p>
                 </div>
                 <a href="{{ route('upload-image') }}"
@@ -47,20 +48,30 @@
                 </a>
             </div>
 
-            @if(count($stories) > 0)
+            @if (count($stories) > 0)
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    @foreach($stories as $story)
-                        <label class="relative cursor-pointer group block">
-                            <input type="radio" wire:model.live="selectedStoryId" value="{{ $story->id }}" class="sr-only">
-                            <div class="p-3 bg-white border-2 rounded-xl transition-all duration-200 hover:border-amber-300 {{ $selectedStoryId == $story->id ? 'border-amber-600 bg-amber-50 ring-1 ring-amber-600' : 'border-gray-200' }}">
+                    @foreach ($stories as $story)
+                        <label class="relative cursor-pointer group block"
+                            onclick="handleRadioClick('{{ $story->id }}')">
+                            <input type="radio" wire:model.live="selectedStoryId" value="{{ $story->id }}"
+                                class="sr-only peer" id="story-{{ $story->id }}">
+                            <div
+                                class="p-3 bg-white border-2 rounded-xl transition-all duration-200 hover:border-amber-300 peer-checked:border-amber-600 peer-checked:bg-amber-50 peer-checked:ring-1 peer-checked:ring-amber-600 {{ $selectedStoryId == $story->id ? 'border-amber-600 bg-amber-50 ring-1 ring-amber-600' : 'border-gray-200' }}">
                                 <div class="flex items-start gap-3">
-                                    <img src="{{ Storage::url($story->image_path) }}" class="w-12 h-12 rounded-lg object-cover bg-gray-100" alt="Thumbnail">
+                                    <img src="{{ Storage::url($story->image_path) }}"
+                                        class="w-12 h-12 rounded-lg object-cover bg-gray-100" alt="Thumbnail">
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-bold text-gray-900 truncate">{{ $story->detected_motif }}</p>
+                                        <p class="text-sm font-bold text-gray-900 truncate">{{ $story->detected_motif }}
+                                        </p>
                                         <p class="text-xs text-gray-500">{{ $story->created_at->format('d M Y') }}</p>
                                     </div>
-                                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center {{ $selectedStoryId == $story->id ? 'border-amber-600 bg-amber-600' : 'border-gray-300' }}">
-                                        <svg class="w-3 h-3 text-white {{ $selectedStoryId == $story->id ? 'opacity-100' : 'opacity-0' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    <div
+                                        class="w-5 h-5 rounded-full border-2 flex items-center justify-center peer-checked:border-amber-600 peer-checked:bg-amber-600 {{ $selectedStoryId == $story->id ? 'border-amber-600 bg-amber-600' : 'border-gray-300' }}">
+                                        <svg class="w-3 h-3 text-white peer-checked:opacity-100 {{ $selectedStoryId == $story->id ? 'opacity-100' : 'opacity-0' }}"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +162,7 @@
                     Nama Produk <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="name" wire:model="name" placeholder="Contoh: Batik Tulis Premium"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors @error('name') border-red-500 @enderror">
+                    class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500 transition-colors {{ $errors->has('name') ? 'border-red-500' : 'border-gray-300 focus:border-gray-300' }}">
                 @error('name')
                     <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -171,7 +182,7 @@
                 </label>
                 <textarea id="description" wire:model="description" rows="4"
                     placeholder="Deskripsikan produk Anda secara detail..."
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors resize-none @error('description') border-red-500 @enderror"></textarea>
+                    class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500 transition-colors resize-none {{ $errors->has('description') ? 'border-red-500' : 'border-gray-300 focus:border-gray-300' }}"></textarea>
                 @error('description')
                     <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -185,7 +196,7 @@
             </div>
 
             <!-- Price and Stock -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
                 <!-- Price -->
                 <div>
                     <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
@@ -194,28 +205,9 @@
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">Rp</span>
                         <input type="number" id="price" wire:model="price" placeholder="0" min="0"
-                            class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors @error('price') border-red-500 @enderror">
+                            class="w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500 transition-colors {{ $errors->has('price') ? 'border-red-500' : 'border-gray-300 focus:border-gray-300' }}">
                     </div>
                     @error('price')
-                        <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-
-                <!-- Stock -->
-                <div>
-                    <label for="stock" class="block text-sm font-medium text-gray-700 mb-2">
-                        Stok <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" id="stock" wire:model="stock" placeholder="0" min="0"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors @error('stock') border-red-500 @enderror">
-                    @error('stock')
                         <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -272,3 +264,20 @@
         </div>
     </form>
 </div>
+
+<script>
+    function handleRadioClick(storyId) {
+        event.preventDefault();
+
+        // Get the current selected story ID from Livewire
+        const currentSelected = @js($selectedStoryId);
+
+        // If clicking on the already selected radio button, unselect it
+        if (currentSelected == storyId) {
+            @this.set('selectedStoryId', '');
+        } else {
+            // Select the new one
+            @this.set('selectedStoryId', storyId);
+        }
+    }
+</script>

@@ -20,7 +20,6 @@ class ProductForm extends Component
     public $name = '';
     public $description = '';
     public $price = '';
-    public $stock = '';
     public $main_image_path;
     public $existing_image;
     public $is_published = false;
@@ -36,7 +35,6 @@ class ProductForm extends Component
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'main_image_path' => $this->isEditing ? 'nullable|image|max:2048' : 'nullable|image|max:2048', // Made nullable if story image is used (handled in save)
             'is_published' => 'boolean',
             'selectedStoryId' => 'nullable|exists:generated_stories,id',
@@ -56,7 +54,6 @@ class ProductForm extends Component
             $this->name = $product->name;
             $this->description = $product->description;
             $this->price = $product->price;
-            $this->stock = $product->stock;
             $this->existing_image = $product->main_image_path;
             $this->is_published = $product->is_published;
             $this->selectedStoryId = $product->generated_story_id;
@@ -81,6 +78,13 @@ class ProductForm extends Component
                 $this->existing_image = $story->image_path;
                 $this->reset('main_image_path');
             }
+        } else {
+            // Clear auto-filled data when unselecting
+            if (!$this->isEditing) {
+                $this->name = '';
+                $this->description = '';
+                $this->existing_image = null;
+            }
         }
     }
 
@@ -99,7 +103,6 @@ class ProductForm extends Component
             'slug' => Str::slug($this->name),
             'description' => $this->description,
             'price' => $this->price,
-            'stock' => $this->stock,
             'is_published' => $this->is_published,
             'generated_story_id' => $this->selectedStoryId ?: null,
         ];
@@ -110,7 +113,7 @@ class ProductForm extends Component
             $data['main_image_path'] = $path;
         } elseif ($this->selectedStoryId) {
             // Use story image if no product image is uploaded
-            $story = $this->stories->firstWhere('id', $this->selectedStoryId);
+            $story = collect($this->stories)->firstWhere('id', $this->selectedStoryId);
             if ($story) {
                 $data['main_image_path'] = $story->image_path;
             }
@@ -136,7 +139,6 @@ class ProductForm extends Component
 
     public function render()
     {
-        return view('livewire.user.product-form')
-            ->title($this->getTitle());
+        return view('livewire.user.product-form')->title($this->getTitle());
     }
 }

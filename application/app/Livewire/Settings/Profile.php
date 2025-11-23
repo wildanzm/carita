@@ -4,13 +4,14 @@ namespace App\Livewire\Settings;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Livewire\WithFileUploads;
 
 #[Title('Profil')]
 #[Layout('layouts.sidebar')]
@@ -45,7 +46,7 @@ class Profile extends Component
     /**
      * Update the profile information for the currently authenticated user.
      */
-    public function updateProfileInformation(): void
+    public function updateProfileInformation()
     {
         $user = Auth::user();
 
@@ -71,11 +72,11 @@ class Profile extends Component
 
             'phone' => ['nullable', 'string', 'max:20'],
 
-            'profile_photo_path' => ['nullable', 'image', 'max:2048'],
+            'profile_photo_path' => Rule::when($this->profile_photo_path instanceof UploadedFile, ['nullable', 'image', 'max:2048'], ['nullable']),
         ]);
 
         // Handle profile photo upload
-        if ($this->profile_photo_path) {
+        if ($this->profile_photo_path instanceof UploadedFile) {
             // Delete old photo if exists
             if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
                 Storage::disk('public')->delete($user->profile_photo_path);
@@ -95,7 +96,8 @@ class Profile extends Component
         $user->save();
 
         $this->dispatch('profile-updated', name: $user->name);
-        $this->editMode = false;
+        
+        return $this->redirect(route('profile.edit'), navigate: false);
     }
 
     /**

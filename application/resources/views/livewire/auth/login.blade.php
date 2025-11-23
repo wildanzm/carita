@@ -22,7 +22,7 @@
                 <label class="block text-lg font-medium text-gray-700 mb-2">Email</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
                             </path>
@@ -30,7 +30,7 @@
                     </div>
                     <flux:input name="email" type="email" required autofocus autocomplete="email"
                         placeholder="nama@email.com"
-                        class="w-full pl-12 pr-4 py-1 border-2 border-gray-300 rounded-full focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all" />
+                        class="w-full pl-12 pr-4 py-1 border-2 border-amber-500 rounded-full focus:outline-none focus:ring-0 transition-all" />
                 </div>
                 @error('email')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
@@ -42,7 +42,7 @@
                 <label class="block text-lg font-medium text-gray-700 mb-2">Password</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                             </path>
@@ -50,7 +50,7 @@
                     </div>
                     <flux:input name="password" type="password" required autocomplete="current-password"
                         placeholder="Masukkan password Anda"
-                        class="w-full pl-12 pr-4 py-1 border-2 border-gray-300 rounded-full focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all" />
+                        class="w-full pl-12 pr-4 py-1 border-2 border-amber-500 rounded-full focus:outline-none focus:ring-0 transition-all" />
                 </div>
                 @error('password')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
@@ -63,11 +63,7 @@
                     class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 py-6 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                     data-test="login-button">
                     <span class="flex items-center justify-center gap-2">
-                        <span class="text-md">Masuk Sekarang</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                        </svg>
+                        <span class="text-md">Masuk</span>
                     </span>
                 </flux:button>
             </div>
@@ -86,8 +82,7 @@
             <div class="text-center">
                 <p class="text-sm text-gray-600 mb-3">
                     Belum punya akun?
-                    <flux:link :href="route('register')"
-                        class="text-orange-600 hover:text-orange-700 font-medium">
+                    <flux:link :href="route('register')" class="text-orange-600 hover:text-orange-700 font-medium">
                         Daftar Sekarang
                     </flux:link>
                 </p>

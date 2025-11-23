@@ -25,7 +25,6 @@ return new class extends Migration
 
             // Harga & stok
             $table->unsignedBigInteger('price')->nullable();   // atau pakai decimal kalau mau
-            $table->unsignedInteger('stock')->nullable();
 
             // Foto utama
             $table->string('main_image_path')->nullable();
