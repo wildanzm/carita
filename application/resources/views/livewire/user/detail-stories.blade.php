@@ -28,7 +28,7 @@
                 </div>
                 <div
                     class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_50px_-12px_rgba(120,53,15,0.25)] border-4 border-white bg-white">
-                    <img src="{{ Storage::url($story->image_path) }}" alt="{{ $story->detected_motif }}"
+                    <img src="{{ Storage::url($story->poster_path ?? $story->image_path) }}" alt="{{ $story->detected_motif }}"
                         class="w-full aspect-[1] object-cover hover:scale-105 transition-transform duration-700 ease-out">
 
                     {{-- Overlay Gradient for text readability if needed, though we keep it clean --}}

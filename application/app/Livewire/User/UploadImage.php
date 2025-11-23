@@ -41,11 +41,15 @@ class UploadImage extends Component
     }
 
     public $showSacredModal = false;
+    public $showPosterModal = false;
+    public $isGeneratingPoster = false;
+
+    public ?string $posterUrl = null;
 
     public function updatedImage()
     {
         // Reset hasil lama, tapi TIDAK reset captionLanguage (biar pilihan user tetap)
-        $this->reset(['aiResult', 'story', 'errorMessage', 'showSacredModal']);
+        $this->reset(['aiResult', 'story', 'errorMessage', 'showSacredModal', 'posterUrl', 'showPosterModal', 'isGeneratingPoster']);
     }
 
     public function analyze(AiStoryService $aiStoryService)
@@ -53,7 +57,7 @@ class UploadImage extends Component
         // Validasi image + captionLanguage (+ custom kalau perlu)
         $this->validate();
 
-        $this->reset(['errorMessage', 'aiResult', 'story', 'showSacredModal']); // reset hasil lama
+        $this->reset(['errorMessage', 'aiResult', 'story', 'showSacredModal', 'posterUrl']); // reset hasil lama
         $this->isLoading = true;
 
         try {
@@ -72,12 +76,38 @@ class UploadImage extends Component
             }
 
             $this->aiResult = $aiResult;
-            // dd($this->aiResult);
+            
+            // Set flag untuk generate poster di background (via frontend polling/trigger)
+            if (!empty($aiResult['detected_motif'])) {
+                $this->isGeneratingPoster = true;
+            }
+
         } catch (\Throwable $e) {
             report($e);
             $this->errorMessage = 'Terjadi kesalahan saat memproses gambar. Silakan coba lagi.';
         } finally {
             $this->isLoading = false;
+        }
+    }
+
+    public function generatePoster(AiStoryService $aiStoryService)
+    {
+        if (!$this->image || empty($this->aiResult['detected_motif'])) {
+            $this->isGeneratingPoster = false;
+            return;
+        }
+
+        try {
+            $this->posterUrl = $aiStoryService->generatePoster(
+                $this->image,
+                $this->aiResult['detected_motif'],
+                $this->aiResult['category'] ?? 'Budaya'
+            );
+        } catch (\Throwable $e) {
+            report($e);
+            // Silent fail for poster, user still gets story
+        } finally {
+            $this->isGeneratingPoster = false;
         }
     }
 
@@ -98,11 +128,12 @@ class UploadImage extends Component
 
             $this->story = $storyService->createStoryFromAiResult(
                 $this->image,
-                $this->aiResult
+                $this->aiResult,
+                $this->posterUrl
             );
 
             // reset file & draft, tapi bahasa tetap
-            $this->reset(['image', 'aiResult']);
+            $this->reset(['image', 'aiResult', 'posterUrl']);
         } catch (\Throwable $e) {
             report($e);
             $this->errorMessage = 'Gagal menyimpan cerita. Silakan coba lagi.';
@@ -111,3 +142,4 @@ class UploadImage extends Component
         }
     }
 }
+
