@@ -20,7 +20,22 @@ class Product extends Component
     public $showDeleteModal = false;
     public $copied = false;
 
-    protected $paginationTheme = 'tailwind';
+    public function checkPhoneRequirement()
+    {
+        if (!Auth::user()->phone) {
+            session()->flash('warning', 'Anda harus mengisi nomor handphone terlebih dahulu untuk dapat menambah produk.');
+            return false;
+        }
+        return true;
+    }
+
+    public function redirectToProfile()
+    {
+        if (!Auth::user()->phone) {
+            return redirect()->route('profile.edit')->with('warning', 'Silakan lengkapi nomor handphone Anda untuk dapat menambah produk.');
+        }
+        return redirect()->route('product.create');
+    }
 
     public function confirmDelete($id)
     {

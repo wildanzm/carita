@@ -16,7 +16,8 @@
             <!-- Name -->
             <div class="space-y-2">
                 <flux:input name="name" type="text" required autofocus autocomplete="name"
-                    placeholder="Nama Lengkap" class="w-full px-4 py-1 border-2 border-gray-300 rounded-full" />
+                    placeholder="Nama Lengkap"
+                    class="w-full px-4 py-1 border-2 border-amber-500 rounded-full focus:outline-none focus:ring-0" />
                 @error('name')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
                 @enderror
@@ -25,7 +26,7 @@
             <!-- Username -->
             <div class="space-y-2">
                 <flux:input name="username" type="text" required autocomplete="username" placeholder="Username"
-                    class="w-full px-4 py-1 border-2 border-gray-300 rounded-full" />
+                    class="w-full px-4 py-1 border-2 border-amber-500 rounded-full focus:outline-none focus:ring-0" />
                 @error('username')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
                 @enderror
@@ -34,7 +35,7 @@
             <!-- Email Address -->
             <div class="space-y-2">
                 <flux:input name="email" type="email" required autocomplete="email" placeholder="Masukan Email"
-                    class="w-full px-4  border-2 border-gray-300 rounded-full py-1" />
+                    class="w-full px-4  border-2 border-amber-500 rounded-full py-1 focus:outline-none focus:ring-0" />
                 @error('email')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
                 @enderror
@@ -43,7 +44,8 @@
             <!-- Password -->
             <div class="space-y-2">
                 <flux:input name="password" type="password" required autocomplete="new-password"
-                    placeholder="Masukan Password" class="w-full px-4  border-2 border-gray-300 rounded-full py-1" />
+                    placeholder="Masukan Password"
+                    class="w-full px-4  border-2 border-amber-500 rounded-full py-1 focus:outline-none focus:ring-0" />
                 @error('password')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
                 @enderror
@@ -52,7 +54,8 @@
             <!-- Confirm Password -->
             <div class="space-y-2">
                 <flux:input name="password_confirmation" type="password" required autocomplete="new-password"
-                    placeholder="Konfirmasi Password" class="w-full px-4  border-2 border-gray-300 rounded-full py-1" />
+                    placeholder="Konfirmasi Password"
+                    class="w-full px-4  border-2 border-amber-500 rounded-full py-1 focus:outline-none focus:ring-0" />
                 @error('password_confirmation')
                     <p class="text-red-600 text-sm mt-1 px-4">{{ $message }}</p>
                 @enderror

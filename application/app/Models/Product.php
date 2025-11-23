@@ -16,7 +16,6 @@ class Product extends Model
         'slug',
         'description',
         'price',
-        'stock',
         'main_image_path',
         'generated_story_id',
         'is_published',

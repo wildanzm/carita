@@ -205,6 +205,31 @@
 .livewire-progress-bar {
     background-color: #f59e0b !important; /* amber-500 */
 }
+
+/* Custom Focus Styles for Form Inputs */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none !important;
+}
+
+/* Ensure all form inputs use amber focus */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: none !important;
+}
+
+/* Override any default blue focus rings */
+*:focus {
+    outline: none !important;
+}
+
+*:focus-visible {
+    outline: none !important;
+}
 /* Mobile Menu Animation */
 .mobile-menu {
     max-height: 0;

@@ -20,10 +20,6 @@
 
         <!-- Name -->
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{{ $user->name }}</h1>
-
-        @if ($user->phone)
-            <p class="text-gray-600 text-sm sm:text-base">{{ $user->phone }}</p>
-        @endif
     </div>
 
     <!-- Products Grid -->
@@ -64,7 +60,7 @@
                         </div>
 
                         <!-- Button -->
-                        <a href="#"
+                        <a href="{{ route('product.detail', ['username' => $user->username, 'slug' => $product->slug]) }}"
                             class="block w-full text-center px-4 py-2 sm:py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-semibold rounded-lg hover:from-amber-600 hover:to-orange-700 transition-all duration-300 shadow-sm hover:shadow-md">
                             Lihat Produk
                         </a>

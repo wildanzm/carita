@@ -7,7 +7,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 
-#[Title('My Stories')]
+#[Title('Carita Saya')]
 #[Layout('layouts.sidebar')]
 class MyStories extends Component
 {
