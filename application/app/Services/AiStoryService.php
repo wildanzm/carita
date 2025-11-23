@@ -132,4 +132,31 @@ class AiStoryService
             default     => 'Indonesia',
         };
     }
+    public function generatePoster(UploadedFile $image, string $title, string $category): ?string
+    {
+        $base = rtrim(config('services.carita_ai.endpoint'), '/');
+
+        try {
+            $response = Http::timeout(60)
+                ->attach(
+                    'image',
+                    file_get_contents($image->getRealPath()),
+                    $image->getClientOriginalName()
+                )
+                ->post($base . '/generate-poster', [
+                    'title'    => $title,
+                    'category' => $category,
+                ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return $data['poster_url'] ?? null;
+            }
+        } catch (\Exception $e) {
+            // Log error but don't stop the process
+            report($e);
+        }
+
+        return null;
+    }
 }

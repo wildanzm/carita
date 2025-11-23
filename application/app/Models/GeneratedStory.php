@@ -15,6 +15,7 @@ class GeneratedStory extends Model
         'public_id',
         'user_id',
         'image_path',
+        'poster_path',
         'detected_motif',
         'narrative',
         'caption',

@@ -17,17 +17,34 @@ use BaconQrCode\Writer;
 
 class StoryService
 {
-    public function createStoryFromAiResult(UploadedFile $image, array $aiResult): GeneratedStory
+    public function createStoryFromAiResult(UploadedFile $image, array $aiResult, ?string $posterUrl = null): GeneratedStory
     {
         $user = Auth::user();
 
         // 1. Simpan gambar upload
         $imagePath = $image->store('stories/images', 'public');
+        
+        // 1.5 Simpan poster jika ada
+        $posterPath = null;
+        if ($posterUrl) {
+            try {
+                $posterContent = file_get_contents($posterUrl);
+                if ($posterContent) {
+                    $posterName = 'stories/posters/' . Str::uuid() . '.jpg';
+                    Storage::disk('public')->put($posterName, $posterContent);
+                    $posterPath = $posterName;
+                }
+            } catch (\Exception $e) {
+                // Ignore poster download error
+                report($e);
+            }
+        }
 
         // 2. Simpan story dulu (tanpa QR)
         $story = GeneratedStory::create([
             'user_id'          => $user->id,
             'image_path'       => $imagePath,
+            'poster_path'      => $posterPath,
             'detected_motif'   => $aiResult['detected_motif'] ?? null,
             'narrative'        => $aiResult['context'] ?? ($aiResult['philosophical_context'] ?? ''), // Filosofi (panjang)
             'caption'          => $aiResult['narrative'] ?? '', // Caption promosi (pendek)
@@ -69,3 +86,7 @@ class StoryService
         return $story;
     }
 }
+
+
+
+
