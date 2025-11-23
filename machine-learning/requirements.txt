@@ -1,8 +1,23 @@
-flask
-python-dotenv
-transformers
-pillow
-sentence-transformers
-chromadb
-groq
-mysql-connector-python
+# --- Framework & Server ---
+Flask==3.0.2
+python-dotenv==1.0.1
+gunicorn==21.2.0
+requests==2.31.0
+
+# --- Database ---
+mysql-connector-python==8.3.0
+chromadb==0.4.24
+
+# --- Image Processing ---
+Pillow==10.2.0
+rembg==2.0.56
+onnxruntime==1.17.1  # Runtime ringan untuk rembg (CPU)
+
+# --- AI Models (Text & LLM) ---
+sentence-transformers==2.5.1
+transformers==4.38.2
+groq==0.4.2
+
+# --- Utilities ---
+numpy==1.26.4
+tqdm==4.66.2
