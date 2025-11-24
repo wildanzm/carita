@@ -1,214 +1,197 @@
 # 🇮🇩 CARITA - Cultural AI for Retail & Identity-Telling Assistant
 
-**CARITA** adalah aplikasi web berbasis AI yang berfungsi sebagai "mesin penerjemah nilai budaya". Proyek ini bertujuan membantu perajin dan UMKM (khususnya di Majalengka) untuk meningkatkan nilai jual produk melalui *storytelling* digital yang otentik, puitis, dan berbasis data riset budaya lokal.
+**CARITA** adalah platform berbasis AI yang memberdayakan perajin lokal (khususnya Majalengka) untuk meningkatkan nilai jual produk melalui *storytelling* budaya yang otentik. Sistem ini memadukan **Vision AI** untuk mengenali motif dan **Generative AI** untuk membuat narasi pemasaran serta poster digital secara otomatis.
 
 ---
 
-## 🧠 Konsep Utama: Otak & Mesin
+## 🌟 Fitur Utama
 
-Sistem CARITA dibangun di atas arsitektur dua lapis yang unik:
+### 🧠 AI & Core Features
+* **📸 Vision Recognition (CLIP):** AI mampu mengenali motif batik atau anyaman dari foto yang diunggah (Zero-Shot Learning), bahkan jika foto tersebut diambil dari sudut yang sulit.
+* **📝 RAG Storytelling (Groq):** Menghasilkan narasi yang tidak berhalusinasi karena berbasis data riset ("Cultural Brain") yang tersimpan dalam Vector Database.
+* **🎨 Smart Poster Generator:** Fitur baru! Otomatis menghapus *background* foto produk (menggunakan `rembg`) dan mendesain poster pemasaran profesional dengan *template* yang sesuai kategori (Heritage/Modern).
+* **🛡️ Cultural Guardrail:** Sistem keamanan etika yang mencegah penyalahgunaan motif berlabel **[Sakral]** untuk tujuan komersial.
 
-1.  **OTAK (Cultural Brain):** Basis data pengetahuan budaya hasil riset primer (bukan data internet acak). Berisi filosofi motif, sejarah, dan nilai kesakralan.
-2.  **MESIN (AI Engine):** Kombinasi *Vision AI* dan *Generative AI* (RAG) yang mengolah "Otak" menjadi narasi pemasaran yang menyentuh hati.
-
----
-
-## 🌟 Fitur Unggulan
-
-* 📸 **Upload & Deteksi Motif:** Unggah foto produk (batik/anyaman), AI akan mengenali motifnya (misal: Gedong Gincu, Lauk Ngibing).
-* 📝 **AI Story Generator:** Menghasilkan deskripsi produk puitis dalam < 15 detik berdasarkan fakta budaya.
-* 🛡️ **Cultural Safeguard (Guardrail):** Sistem otomatis memblokir atau memberi peringatan jika motif "Sakral" digunakan untuk tujuan komersial yang tidak etis.
-* 🔗 **QR Scan-to-Story:** Generate kode QR unik untuk setiap produk yang mengarah ke halaman cerita publik.
-* 📱 **Mobile Friendly:** Dioptimalkan untuk HP Android spesifikasi rendah.
+### 💻 Aplikasi Web
+* **Admin Panel (Filament PHP):** Dashboard manajemen data budaya yang modern dan *user-friendly* untuk Kurator/Admin.
+* **User Dashboard (Livewire Flux):** Antarmuka responsif bagi perajin untuk mengelola produk, melihat riwayat cerita, dan mengunduh aset digital (QR & Poster).
+* **Public Story Page:** Halaman publik `/s/{uuid}` yang SEO-friendly untuk setiap produk.
+* **Marketplace Ready:** Struktur database kini mendukung manajemen produk (Harga, Deskripsi, Stok) yang terhubung dengan cerita budaya.
 
 ---
 
 ## 🏗️ Arsitektur Sistem
 
-Berikut adalah gambaran bagaimana data mengalir dalam sistem CARITA:
+Sistem menggunakan arsitektur **Hybrid Monolith**, di mana aplikasi utama berbasis PHP berkomunikasi dengan *Microservice* AI berbasis Python.
 
 ```
 graph TD
-    User[👤 Perajin/User] -->|Upload Foto| Laravel[🟢 Laravel App (Web)]
-    
-    subgraph "Aplikasi Utama (Laravel)"
-        Laravel -->|Simpan Data| MySQL[(🗄️ Database MySQL)]
-        Laravel -->|Antrean Job| Redis[(🔴 Redis Queue)]
-        MySQL <-->|Cultural Data| Laravel
+    subgraph "User Experience"
+        User[👤 Perajin] -->|Upload Foto| Frontend[🟢 Laravel Livewire]
+        Frontend -->|Manage Data| Filament[🟠 Filament Admin]
     end
     
-    subgraph "AI Microservice (Python)"
-        Laravel -->|API Request| Flask[🐍 Python Flask Service]
-        Flask -->|Vision Processing| Vision[👁️ Vision Model]
-        Flask -->|Embedding| RAG[📚 RAG System]
-        Vision --> Flask
-        RAG --> Flask
+    subgraph "Data & Storage"
+        MySQL[(🗄️ MySQL: Data Relasional)]
+        ChromaDB[(📚 ChromaDB: Vector Search)]
+        Storage[📂 Storage: Foto & Poster]
+    end
+    
+    subgraph "AI Microservice (Flask)"
+        API[🐍 Python Flask API]
+        Vision[👁️ CLIP Vision Model]
+        RAG[🧠 RAG Engine (Groq)]
+        Designer[🎨 Poster Designer (Rembg)]
     end
 
-    Flask -->|Hasil Narasi| Laravel
-    Laravel -->|Generate QR| QRCode[📱 QR Code]
-    QRCode --> User
+    Frontend <-->|REST API| API
+    Frontend <--> MySQL
+    
+    API --> Vision
+    API -->|Context Retrieval| ChromaDB
+    API -->|Generate Text| RAG
+    API -->|Process Image| Designer
 ````
 
-### Struktur Database (ERD Sederhana)
-
-  * **`cultural_chunks`**: Menyimpan "Otak" (Narasi, Embedding, Label Sakral).
-  * **`generated_stories`**: Menyimpan hasil generasi user (Foto, Cerita, QR, UUID).
-  * **`audit_logs`**: Mencatat aktivitas keamanan dan pelanggaran etika budaya.
-
 -----
 
-## 🛠️ Teknologi yang Digunakan
+## 🛠️ Teknologi (Tech Stack)
 
-**Frontend & Backend:**
+### **Backend & Frontend (Laravel)**
 
   * **Framework:** Laravel 12
-  * **UI:** Livewire 3 + Tailwind CSS
-  * **Database:** MySQL
-  * **Queue:** Redis
-  * **Security:** Spatie Laravel Permission
+  * **Admin Panel:** FilamentPHP v3
+  * **Frontend Stack:** Livewire 3 + Volt + Flux UI (Komponen Modern)
+  * **Styling:** Tailwind CSS
+  * **Database:** MySQL 8.0
+  * **Queue:** Redis (Untuk memproses job AI di background)
 
-**AI Service (Microservice):**
+### **AI Service (Python)**
 
-  * **Language:** Python 3.10+
   * **Framework:** Flask
-  * **AI Libraries:** PyTorch, Sentence-Transformers, Pillow
-  * **Architecture:** REST API (Internal Communication)
+  * **LLM Engine:** Groq API
+  * **Vision Model:** OpenAI CLIP (via `sentence-transformers`)
+  * **Vector DB:** MySQL (Menyimpan embedding pengetahuan budaya)
+  * **Image Processing:** `rembg` (Hapus background), `Pillow` (Manipulasi gambar)
 
 -----
 
-## 🚀 Panduan Instalasi (Step-by-Step)
+## 🚀 Panduan Instalasi
 
-Ikuti langkah ini untuk menjalankan CARITA di komputer lokal Anda.
+Ikuti langkah ini untuk menjalankan CARITA di lingkungan lokal (Development).
 
 ### Prasyarat
 
-Pastikan Anda sudah menginstal:
-
-  * PHP \>= 8.2 & Composer
+  * PHP \>= 8.2, Composer
+  * Python \>= 3.10, Pip
   * Node.js & NPM
-  * Python \>= 3.10
   * MySQL & Redis
 
-### 1\. Setup Aplikasi Utama (Laravel)
+### 1\. Setup Aplikasi Utama
 
-Masuk ke folder aplikasi:
+Masuk ke folder `application`:
 
 ```bash
 cd application
-```
-
-Install dependensi PHP dan JavaScript:
-
-```bash
 composer install
 npm install
-```
-
-Duplikasi file `.env` dan atur konfigurasi database:
-
-```bash
 cp .env.example .env
-php artisan key:generate
 ```
 
-Ubah konfigurasi `.env` sesuai database lokal Anda:
+Konfigurasi `.env` (Sesuaikan database & Redis):
 
 ```env
+DB_CONNECTION=mysql
 DB_DATABASE=carita_db
-DB_USERNAME=root
-DB_PASSWORD=
-
 QUEUE_CONNECTION=redis
+FILESYSTEM_DISK=public
 ```
 
-Jalankan migrasi database dan *seeder* (data dummy awal):
+Jalankan migrasi dan seeder (Penting: Seeder akan membuat Role Admin & User):
 
 ```bash
+php artisan key:generate
 php artisan migrate --seed
+php artisan storage:link
 ```
 
-*(Command ini akan membuat tabel dan mengisi data user Admin serta contoh data budaya)*
+### 2\. Setup AI Service
 
-### 2\. Setup AI Service (Python)
-
-Buka terminal baru, masuk ke folder service python (buat folder `python-service` sejajar dengan `application` jika belum ada):
+Masuk ke folder `machine-learning`:
 
 ```bash
-cd python-service
+cd machine-learning
 python -m venv venv
-source venv/bin/activate  # Untuk Mac/Linux
-# atau
-venv\Scripts\activate     # Untuk Windows
+# Aktifkan Venv (Windows: venv\Scripts\activate || Mac/Linux: source venv/bin/activate)
 ```
 
-Install library AI:
+Install dependensi (Gunakan perintah khusus untuk PyTorch CPU agar ringan):
 
 ```bash
+# Install sisa library
 pip install -r requirements.txt
 ```
 
-Buat file `.env` di dalam folder `python-service` untuk API Key:
+Buat file `.env` di folder `machine-learning` dan isi API Key:
 
 ```env
-CARITA_AI_KEY=rahasia-dapur-carita
+# Wajib diisi untuk fitur Chat/Story
+GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxxxxxx
+# Koneksi Database
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=carita_db
 ```
 
-### 3\. Menjalankan Aplikasi
+### 3\. Menjalankan Sistem
 
-Anda perlu menjalankan **3 terminal** secara bersamaan:
+Anda perlu menjalankan **3 terminal** berbeda:
 
-**Terminal 1 (Laravel Server):**
+  * **Terminal 1 (Laravel Server):**
 
-```bash
-cd application
-php artisan serve
-```
+    ```bash
+    cd application
+    php artisan serve
+    ```
 
-**Terminal 2 (Frontend Build & Queue Worker):**
+  * **Terminal 2 (Queue Worker & Assets):**
 
-```bash
-cd application
-npm run dev
-# Buka tab baru untuk worker
-php artisan queue:work
-```
+    ```bash
+    cd application
+    php artisan queue:work
+    ```
 
-**Terminal 3 (Python AI Service):**
+  * **Terminal 3 (Python AI Service):**
 
-```bash
-cd python-service
-# Pastikan venv aktif
-python app.py
-```
+    ```bash
+    cd machine-learning
+    python app.py
+    ```
 
-Akses aplikasi di browser: `http://localhost:8000`
+Akses aplikasi di: `http://localhost:8000`  
+Akses Admin Panel di: `http://localhost:8000/admin`
 
 -----
 
-## 📖 Alur Penggunaan (User Flow)
+## 📖 Cara Kerja Fitur Utama
 
-1.  **Login:** Masuk sebagai User (Perajin) atau Admin (Kurator).
-2.  **Dashboard:**
-      * *Admin:* Mengelola data "Otak Budaya" (Tambah/Edit Chunk Budaya).
-      * *User:* Melihat riwayat cerita yang pernah dibuat.
-3.  **Buat Cerita Baru:**
-      * Klik "Buat Cerita".
-      * Upload foto produk (Batik/Anyaman).
-      * Tunggu proses AI (Vision mendeteksi motif -\> RAG mencari filosofi -\> LLM menulis narasi).
-4.  **Hasil:**
-      * Aplikasi menampilkan foto + narasi puitis.
-      * Unduh QR Code yang dihasilkan.
-5.  **Public Page:**
-      * Scan QR Code akan membuka halaman publik `carita.id/s/{uuid}` yang berisi cerita tersebut.
+1.  **Input Pengetahuan (Admin):**
 
------
+      * Admin masuk ke panel Filament.
+      * Menambahkan "Cultural Chunk" (misal: Filosofi Batik Angin) + Foto Referensi.
+      * Python Service otomatis melakukan *embedding* teks dan gambar ke ChromaDB.
 
-## 🔒 Keamanan & Etika
+2.  **User Flow (Perajin):**
 
-  * **Guardrail:** Jika AI mendeteksi motif sakral, tombol "Generate Commercial Story" akan dinonaktifkan.
-  * **UUID:** URL cerita publik menggunakan UUID acak agar data perajin tidak mudah di-*scraping*.
-  * **Audit Log:** Setiap upaya penggunaan data sakral tercatat di database.
+      * User login -\> Klik "Buat Cerita".
+      * Upload foto produk.
+      * **Proses AI:**
+        1.  Vision AI membandingkan foto user dengan database motif.
+        2.  Jika motif dikenali, RAG mengambil filosofinya.
+        3.  LLM (Groq) menulis narasi puitis.
+        4.  Designer AI membuat poster otomatis.
+      * User menerima: Narasi, QR Code, dan Poster Digital siap posting.
 
 -----
 
@@ -222,4 +205,4 @@ Akses aplikasi di browser: `http://localhost:8000`
 
 -----
 
-*Dibuat dengan ❤️ dan ☕ untuk Budaya Majalengka.*
+*Dibuat dengan ❤️ untuk melestarikan Budaya Indonesia.*
